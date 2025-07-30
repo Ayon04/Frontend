@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Left Sidebar</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <div class="container-fluid">
+    <div class="row">
+
+      <!-- Sidebar - Employee List -->
+      <div class="col-2 p-4 bg-light border-end">
+        <div class="list-group list-group-flush overflow-auto" style="max-height: 100vh;">
+          <div class="list-group-item active sticky-top">
+            <h6 class="mb-0 py-1">Employee List</h6>
+          </div>
+          <div *ngFor="let emp of employees" class="list-group-item list-group-item-action"
+            [ngStyle]="{ backgroundColor: emp.id === selectedEmployee?.id ? 'skyblue' : '' }" style="cursor: pointer"
+            (click)="loadEmployeeToForm(emp)">
+
+            <div class="fw-bold">{{ emp.id }} - {{ emp.employeeName }}</div>
+            <div class="text-muted small">{{ emp.designation }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Form Section -->
+      <div class="col-10 p-4">
+
+        <!-- Button Actions -->
+        <div class="d-flex justify-content-end mb-3">
+          <button type="button" class="btn btn-outline-primary me-2">Add</button>
+          <button type="button" class="btn btn-outline-warning me-2">Edit</button>
+          <button type="button" class="btn btn-outline-danger">Delete</button>
+        </div>
+
+        <!-- Employee Form -->
+        <form [formGroup]="employeeForm">
+          <div class="row mt-3">
+            <div class="col">
+              <label for="name">Employee Name</label>
+              <input id="name" type="text" value="" class="form-control mt-1" formControlName="employeeName">
+            </div>
+
+            <div class="col">
+              <label for="nameBangla">Employee Name Bangla</label>
+              <input id="nameBangla" type="text" class="form-control mt-1" formControlName="employeeNameBangla">
+            </div>
+
+            <div class="col">
+              <label for="FatherName">Father's Name</label>
+              <input id="FatherName" type="text" class="form-control mt-1" formControlName="fatherName">
+            </div>
+
+            <div class="col">
+              <label for="MotherName">Mother's Name</label>
+              <input id="MotherName" type="text" class="form-control mt-1" formControlName="motherName">
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col">
+              <label for="IdReportingManager">Reporting Manager</label>
+              <input id="IdReportingManager" type="text" class="form-control mt-1" formControlName="idReportingManager">
+            </div>
+
+            <div class="col">
+              <label for="IdJobType">Job Type</label>
+              <select class="form-select mt-1" formControlName="idJobType">
+                <option value="">Select Job Type</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+              </select>
+            </div>
+
+            <div class="col">
+              <label for="IdEmployeeType">Employee Type</label>
+              <select class="form-select mt-1" formControlName="idEmployeeType">
+                <option value="">Select Employee Type</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+              </select>
+            </div>
+
+            <div class="col">
+              <label for="BirthDate">Date Of Birth</label>
+              <input id="BirthDate" type="date" class="form-control mt-1" formControlName="birthDate">
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col">
+              <label for="JoiningDate">Joining Date</label>
+              <input id="JoiningDate" type="date" class="form-control mt-1" formControlName="joiningDate">
+            </div>
+
+            <div class="col">
+              <label for="IdGender">Gender</label>
+              <select class="form-select mt-1" formControlName="idGender">
+                <option value="">Select Gender</option>
+                <option value="1">Male</option>
+                <option value="2">Female</option>
+              </select>
+            </div>
+
+            <div class="col">
+              <label for="IdReligion">Religion</label>
+              <select class="form-select mt-1" formControlName="idReligion">
+                <option value="">Select Religion</option>
+                <option value="1">Religion A</option>
+                <option value="2">Religion B</option>
+              </select>
+            </div>
+
+            <div class="col">
+              <label for="IdDepartment">Department</label>
+              <select class="form-select mt-1" formControlName="idDepartment">
+                <option value="">Select Department</option>
+                <option *ngFor="let dep of deptDropDown" [value]="dep.value">
+                    {{ dep.text }}
+                  </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col">
+              <label for="IdSection">Section</label>
+              <select class="form-select mt-1" formControlName="idSection">
+                <option value="">Select Section</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+              </select>
+            </div>
+
+            <div class="col">
+              <label for="IdDesignation">Designation</label>
+              <select class="form-select mt-1" formControlName="idDesignation">
+                <option value="">Select Designation</option>
+                <option value="1">Dev</option>
+                <option value="2">Manager</option>
+              </select>
+            </div>
+
+            <div class="col">
+              <label>Has Overtime?</label>
+              <div class="d-flex">
+                <div class="form-check me-3">
+                  <input type="radio" class="form-check-input" [value]="true" formControlName="hasOvertime"
+                    id="overtimeYes">
+                  <label class="form-check-label" for="overtimeYes">Yes</label>
+                </div>
+                <div class="form-check">
+                  <input type="radio" class="form-check-input" [value]="false" formControlName="hasOvertime"
+                    id="overtimeNo">
+                  <label class="form-check-label" for="overtimeNo">No</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <label>Has Attendance Bonus?</label>
+              <div class="d-flex">
+                <div class="form-check me-3">
+                  <input type="radio" class="form-check-input" [value]="true" formControlName="hasAttendanceBonus"
+                    id="bonusYes">
+                  <label class="form-check-label" for="bonusYes">Yes</label>
+                </div>
+                <div class="form-check">
+                  <input type="radio" class="form-check-input" [value]="false" formControlName="hasAttendanceBonus"
+                    id="bonusNo">
+                  <label class="form-check-label" for="bonusNo">No</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col">
+              <label for="IdWeekOff">Week Off</label>
+              <select class="form-select mt-1" formControlName="idWeekOff">
+                <option value="">Select Week Off</option>
+                <option value="1">Friday</option>
+                <option value="2">Saturday</option>
+              </select>
+            </div>
+
+            <div class="col">
+              <label for="NationalIdentificationNumber">NID</label>
+              <input id="NationalIdentificationNumber" type="text" class="form-control mt-1"
+                formControlName="nationalIdentificationNumber">
+            </div>
+
+            <div class="col">
+              <label for="ContactNo">Contact No</label>
+              <input id="ContactNo" type="text" class="form-control mt-1" formControlName="contactNo">
+            </div>
+
+            <div class="col">
+              <label for="IdMaritalStatus">Marital Status</label>
+              <select class="form-select mt-1" formControlName="idMaritalStatus">
+                <option value="">Select Marital Status</option>
+                <option value="1">Single</option>
+                <option value="2">Married</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col">
+              <label for="CreatedBy">Created By</label>
+              <input id="CreatedBy" type="text" class="form-control mt-1" formControlName="createdBy">
+            </div>
+
+            <div class="col">
+              <label>Is Active?</label>
+              <div class="d-flex">
+                <div class="form-check me-3">
+                  <input class="form-check-input" type="radio" [value]="true" formControlName="isActive"
+                    id="isActiveYes">
+                  <label class="form-check-label" for="isActiveYes">Yes</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" [value]="false" formControlName="isActive"
+                    id="isActiveNo">
+                  <label class="form-check-label" for="isActiveNo">No</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col">
+              <label for="Address">Address</label>
+              <input id="Address" type="text" class="form-control mt-1" formControlName="address">
+            </div>
+
+            <div class="col">
+              <label for="ParmanentAddress">Parmanent Address</label>
+              <input id="ParmanentAddress" type="text" class="form-control mt-1" formControlName="presentAddress">
+            </div>
+
+          </div>
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+
+</body>
+
+</html>
