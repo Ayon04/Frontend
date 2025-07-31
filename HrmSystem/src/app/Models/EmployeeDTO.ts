@@ -42,9 +42,6 @@ import {EmployeeFamilyInfoDTO} from './EmployeeFamilyInfoDTO '
 //   empImg?: File;
 // }
 
-
-
-
 export class EmployeeDTO {
   idClient: number;
   id: number;
@@ -125,15 +122,4 @@ export class EmployeeDTO {
   
 }
 
-export class DropDown {
- 
-text:string;
-value:number;
-
-constructor(data: Partial<DropDown> = {}) {
-    this.text = data.text ?? "";
-    this.value = data.value ?? 0;
-}
-
-}
 

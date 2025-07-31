@@ -71,22 +71,22 @@
             <div class="col">
               <label for="IdJobType">Job Type</label>
               <select class="form-select mt-1" formControlName="idJobType">
-                <option value="">Select Job Type</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+            
+                <option *ngFor="let job of jobtyps" [value]="job.value">
+                      {{job.text}}
+                </option>
               </select>
             </div>
 
             <div class="col">
               <label for="IdEmployeeType">Employee Type</label>
               <select class="form-select mt-1" formControlName="idEmployeeType">
-                <option value="">Select Employee Type</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                <option *ngFor="let emp of employeeTypes" [value]="emp.value">
+                      {{emp.text}}
+                </option>
               </select>
             </div>
+
 
             <div class="col">
               <label for="BirthDate">Date Of Birth</label>
@@ -104,47 +104,47 @@
               <label for="IdGender">Gender</label>
               <select class="form-select mt-1" formControlName="idGender">
                 <option value="">Select Gender</option>
-                <option value="1">Male</option>
-                <option value="2">Female</option>
+               <option *ngFor="let gen of genders" [value]="gen.value">
+                      {{gen.text}}
+              </option>
               </select>
             </div>
 
             <div class="col">
               <label for="IdReligion">Religion</label>
               <select class="form-select mt-1" formControlName="idReligion">
-                <option value="">Select Religion</option>
-                <option value="1">Religion A</option>
-                <option value="2">Religion B</option>
+                <option *ngFor="let rel of religions" [value]="rel.value">
+                      {{rel.text}}
+              </option>
               </select>
             </div>
 
             <div class="col">
-              <label for="IdDepartment">Department</label>
-              <select class="form-select mt-1" formControlName="idDepartment">
-                <option value="">Select Department</option>
-                <option *ngFor="let dep of deptDropDown" [value]="dep.value">
-                    {{ dep.text }}
-                  </option>
-              </select>
-            </div>
-          </div>
+                  <label class="form-label">Department</label>
+                  <select class="form-select" formControlName="idDepartment">
+                    <option *ngFor="let dept of departments" [value]="dept.value">
+                      {{dept.text}}
+                    </option>
+                  </select>
+                </div>
 
           <div class="row mt-3">
             <div class="col">
               <label for="IdSection">Section</label>
               <select class="form-select mt-1" formControlName="idSection">
-                <option value="">Select Section</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
+               <option *ngFor="let sec of sections" [value]="sec.value">
+                      {{sec.text}}
+               </option>
               </select>
             </div>
 
             <div class="col">
               <label for="IdDesignation">Designation</label>
               <select class="form-select mt-1" formControlName="idDesignation">
-                <option value="">Select Designation</option>
-                <option value="1">Dev</option>
-                <option value="2">Manager</option>
+               
+                 <option *ngFor="let desig of designations" [value]="desig.value">
+                      {{desig.text}}
+                </option>
               </select>
             </div>
 
@@ -185,9 +185,9 @@
             <div class="col">
               <label for="IdWeekOff">Week Off</label>
               <select class="form-select mt-1" formControlName="idWeekOff">
-                <option value="">Select Week Off</option>
-                <option value="1">Friday</option>
-                <option value="2">Saturday</option>
+              <option *ngFor="let wkf of weekoffs" [value]="wkf.value">
+                      {{wkf.text}}
+              </option>
               </select>
             </div>
 
@@ -206,8 +206,9 @@
               <label for="IdMaritalStatus">Marital Status</label>
               <select class="form-select mt-1" formControlName="idMaritalStatus">
                 <option value="">Select Marital Status</option>
-                <option value="1">Single</option>
-                <option value="2">Married</option>
+               <option *ngFor="let mt of MaritalStatus" [value]="mt.value">
+                      {{mt.text}}
+              </option>
               </select>
             </div>
           </div>
@@ -247,7 +248,57 @@
             </div>
 
           </div>
+          </div>
         </form>
+
+  <div class="container mt-4">
+  <div class="row">
+    <!-- g1 -->
+    <div class="col-6">
+      <div class="border p-3">
+        <h5>Documents</h5>
+        <table class="table table-bordered table-sm">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>H1</th>
+              <th>H2</th>
+              <th>H3</th>
+              <th>H4</th>
+              <th>H5</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td></tr>
+           
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- g2 -->
+    <div class="col-6">
+      <div class="border p-3">
+        <h5>Education Information</h5>
+        <table class="table table-bordered table-sm">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>H1</th>
+              <th>H2</th>
+              <th>H3</th>
+              <th>H4</th>
+              <th>H5</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td></tr>
+           
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 
       </div>
 

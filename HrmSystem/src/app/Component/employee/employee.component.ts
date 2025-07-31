@@ -3,9 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { EmployeeDTO } from '../../Models/EmployeeDTO';
 import { EmployeeService } from '../../Services/employee.service';
 import { DropDownService } from '../../Services/dropDown.service';
-
 import { RouterModule } from '@angular/router';
-import { FormBuilder,FormControl,FormGroup,FormsModule,ReactiveFormsModule,Validators} from '@angular/forms';
+import { FormBuilder,FormControl,FormGroup,FormsModule,ReactiveFormsModule} from '@angular/forms';
+import { DropDown } from '../../Models/DropDown';
 
 @Component({
   selector: 'app-employee',
@@ -21,28 +21,47 @@ export class EmployeeComponent implements OnInit {
 
    public employeeForm: FormGroup;
 
-  idClient = 10001001;
-  departments: any[] = [];
+  public idClient:number = 10001001;
+  departments: DropDown[] = [];
   sections: any[] = [];
   designations: any[] = [];
   genders: any[] = [];
   religions: any[] = [];
   http: any;
-  
-  public employeeDto: EmployeeDTO;
+  jobtyps: any[] = [];
+  employeeTypes: any[] = [];
+  weekoffs: any[] = [];
+  MaritalStatus: any[] = [];
 
+
+  public employeeDto: EmployeeDTO;
+  
   constructor(
     private employeeService: EmployeeService,
+    private dropdownService: DropDownService,
     private fb: FormBuilder
   ) {
     this.employeeDto = new EmployeeDTO();
-this.employeeForm = this.initForm();
+    this.employeeForm = this.initForm();
   }
 
   ngOnInit(): void {
      //this.employeeDto = new EmployeeDTO();
     //this.employeeForm = this.initForm();
     this.loadEmployees();
+    //this.loadDropDownList();
+
+    this.getDepartments(this.idClient);
+    this.getDesignation(this.idClient);
+    this.getJobType(this.idClient);
+    this.getGender(this.idClient);
+    this.getEmployeeType(this.idClient);
+    this.getReligion(this.idClient);
+    this.getSection(this.idClient);
+    this.getWeekOff(this.idClient);
+    this.getWeekOff(this.idClient);
+    this.getMaritalStatus(this.idClient);
+
   }
 
   initForm(): FormGroup {
@@ -83,10 +102,133 @@ this.employeeForm = this.initForm();
   }
 
    loadDropDownList(): void {
-    this.DropDownService.getDepartmentDropdown(this.idClient).subscribe(data => {
-      this.deptDropDown = data;
+     this.getDepartments(this.idClient);
+     this.getDesignation(this.idClient);
+     this.getJobType(this.idClient);
+     this.getGender(this.idClient);
+     this.getEmployeeType(this.idClient);
+     this.getReligion(this.idClient);
+     this.getSection(this.idClient);
+     this.getWeekOff(this.idClient);
+     this.getMaritalStatus(this.idClient);
+
+    //   this.dropdownService.getDesignationDropdown(this.idClient).subscribe(data => {
+    //   this.departments = data;
+
+    // });
+  }
+
+  getDepartments(idClient:number): void {
+
+    this.dropdownService.getDepartmentDropdown(idClient).subscribe({
+      next: data => {
+        this.departments = data;
+        },
+     
+      
     });
   }
+
+  getDesignation(idClient:number): void {
+    this.dropdownService.getDesignationDropdown(idClient).subscribe({
+      next: data => {
+        this.designations = data;
+      },
+
+    });
+  }
+
+    getJobType(idClient:number): void {
+    this.dropdownService.getJobTypeDropDown(idClient).subscribe({
+      next: data => {
+        this.jobtyps = data;
+      },
+
+    });
+
+  }
+
+    getGender(idClient:number): void {
+    this.dropdownService.getGenderDropDown(idClient).subscribe({
+      next: data => {
+        this.genders = data;
+      },
+
+    });
+
+  }
+
+    getEmployeeType(idClient:number): void {
+    this.dropdownService.getEmployueeTypesDropDown(idClient).subscribe({
+      next: data => {
+        this.employeeTypes = data;
+      },
+
+    });
+
+  }
+
+
+    getReligion(idClient:number): void {
+    this.dropdownService.getReligionDropDown(idClient).subscribe({
+      next: data => {
+        this.religions = data;
+      },
+
+    });
+
+  }
+
+    getSection(idClient:number): void {
+    this.dropdownService.getSectionDropDown(idClient).subscribe({
+      next: data => {
+        this.sections = data;
+      },
+
+    });
+
+  }
+
+
+    getWeekOff(idClient:number): void {
+    this.dropdownService.getWeekOffDropDown(idClient).subscribe({
+      next: data => {
+        this.weekoffs = data;
+      },
+
+    });
+
+  }
+
+
+    getMaritalStatus(idClient:number): void {
+    this.dropdownService.getMaritalStatusDropDown(idClient).subscribe({
+      next: data => {
+        this.MaritalStatus = data;
+      },
+
+    });
+
+  }
+
+
+  
+
+
+//   getDepartments(): void {
+//   this.dropdownService.getDepartmentDropdown(this.idClient).subscribe(
+//     data => {
+//       console.log('ID:', this.idClient);
+//       this.departments = data;
+//       console.log('DATA:', data);
+//     },
+//     error => {
+//       console.error('Error fetching departments:', error);
+//     }
+//   );
+// }
+
+
   loadEmployeeToForm(emp: EmployeeDTO): void {
     this.selectedEmployee = emp;
     console.log('Fetching employee by ID:', emp.id);
@@ -133,3 +275,8 @@ this.employeeForm = this.initForm();
   }
 
 }
+
+
+
+
+

@@ -19,9 +19,7 @@ export class EmployeeService {
       );
   }
 
-
-
-  getEmployeeById(idClient: number, id: number): Observable<any> {
+ getEmployeeById(idClient: number, id: number): Observable<any> {
   const params = new HttpParams()
   .set('Idclient', idClient.toString())
   .set('id', id.toString());
