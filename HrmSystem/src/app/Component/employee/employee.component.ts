@@ -27,8 +27,6 @@ export class EmployeeComponent implements OnInit {
 
    public employeeForm: FormGroup;
 
-   public documentsForm: FormGroup;
-
   public idClient:number = 10001001;
   departments: DropDown[] = [];
   sections: any[] = [];
@@ -58,7 +56,6 @@ export class EmployeeComponent implements OnInit {
   ) {
     this.employeeDto = new EmployeeDTO();
     this.employeeForm = this.initForm();
-    this.documentsForm = this.AdddocumentForm();
   
   }
 
@@ -324,11 +321,16 @@ formatDateToInput(date: any): string {
 //   this.docitems = this.documentsForm.get('employeeDocuments') as FormArray;  
 // }
 
-AdddocumentForm(): FormGroup {
+createdocumentForm(): FormGroup {
     return this.fb.group({
       documentName: '',
       fileName: '',
       uploadedFileExtention: ''
     });
+  }
+
+Adddocument(){
+  			this.employeeDocuments.push(this.createdocumentForm());
+        
   }
 }

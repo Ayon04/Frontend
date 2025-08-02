@@ -267,32 +267,29 @@
           <div class="col-15 mt-4">
             <div class="border p-3">
               <h5>Documents</h5>
-               <button type="button" (click)="AdddocumentForm()" class="btn btn-success me-2">Add</button>
-              <table class="table table-bordered  mt-2">
-              
+               <button type="button" (click)="Adddocument()" class="btn btn-success me-2">Add</button>
+              <table class="table table-bordered  mt-2" formArrayName="employeeDocuments">
                 <thead>
                   <tr>
-                 
                     <th>IdEmployee</th>
-                    <th contenteditable="true" >Document Name</th>
+                    <th contenteditable="true">Document Name</th>
                     <th>File Name</th>
                     <th>Uploaded Date</th>
                     <th>File Extention</th>
                     <th>Action</th>
                   </tr>
                 </thead>
-              <tbody>
-            <tr *ngFor="let doc of employeeDocuments; let i = index" [formGroup]="documentsForm">
-                            
-                <td fxFlex="22">
-                  <label>Document </label>
-                        <select formControlName="documentName" >
-                              <option *ngFor="let doc of employeeDocuments" [value]="doc.documentName">
-                                  {{doc.documentName}}
-                              <option>
-                        </select>
-                </td>
-            </tr>
+                <tbody>
+                  <tr *ngFor="let doc of employeeDocuments; let i = index">
+                    <td fxFlex="22">
+                      <label>Document </label>
+                      <select formControlName="documentName">
+                        <option *ngFor="let doc of employeeDocuments" [value]="doc.documentName">
+                          {{doc.documentName}}
+                        <option>
+                      </select>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
