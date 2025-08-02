@@ -77,6 +77,7 @@ export class EmployeeDTO {
   employeeEducationInfos: EmployeeEducationInfoDTO[];
   employeeProfessionalCertifications: EmployeeProfessionalCertificationDTO[];
   employeeFamilyInfos: EmployeeFamilyInfoDTO[];
+  
 
   empImg?: File;
 

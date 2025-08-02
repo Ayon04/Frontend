@@ -20,7 +20,7 @@
           </div>
           <div *ngFor="let emp of employees" class="list-group-item list-group-item-action"
             [ngStyle]="{ backgroundColor: emp.id === selectedEmployee?.id ? 'skyblue' : '' }" style="cursor: pointer"
-            (click)="loadEmployeeToForm(emp)">
+            (click)="loadEmployeeToForm(emp);loadEmployeeImageToForm(emp)">
 
             <div class="fw-bold">{{ emp.id }} - {{ emp.employeeName }}</div>
             <div class="text-muted small">{{ emp.designation }}</div>
@@ -33,9 +33,10 @@
 
         <!-- Button Actions -->
         <div class="d-flex justify-content-end mb-3">
-          <button type="button" class="btn btn-outline-primary me-2">Add</button>
-          <button type="button" class="btn btn-outline-warning me-2">Edit</button>
-          <button type="button" class="btn btn-outline-danger">Delete</button>
+          <button type="button" class="btn btn-primary me-2">Add</button>
+          <button type="button" class="btn btn-warning me-2">Update</button>
+          <button type="button" class="btn btn-danger me-2">Delete</button>
+          <button (click)="clearForm()" type="button" class="btn btn-secondary">Clear</button>
         </div>
 
         <!-- Employee Form -->
@@ -43,7 +44,7 @@
           <div class="row mt-3">
             <div class="col">
               <label for="name">Employee Name</label>
-              <input id="name" type="text" value="" class="form-control mt-1" formControlName="employeeName">
+              <input id="name" type="text" name="name" value="" class="form-control mt-1" formControlName="employeeName">
             </div>
 
             <div class="col">
@@ -213,13 +214,11 @@
             </div>
           </div>
 
-          <div class="row mt-3">
-            <div class="col">
-              <label for="CreatedBy">Created By</label>
-              <input id="CreatedBy" type="text" class="form-control mt-1" formControlName="createdBy">
-            </div>
+         
 
-            <div class="col">
+          <div class="row mt-3">
+
+             <div class="col">
               <label>Is Active?</label>
               <div class="d-flex">
                 <div class="form-check me-3">
@@ -234,9 +233,7 @@
                 </div>
               </div>
             </div>
-          </div>
 
-          <div class="row mt-3">
             <div class="col">
               <label for="Address">Address</label>
               <input id="Address" type="text" class="form-control mt-1" formControlName="address">
@@ -247,59 +244,176 @@
               <input id="ParmanentAddress" type="text" class="form-control mt-1" formControlName="presentAddress">
             </div>
 
+        <div class="col " >
+          <label for="profileImage" class="form-label">Upload Image</label>
+          <input type="file" class="form-control" id="profileImage" accept="image/*">
+
+         <div *ngIf="employeeImageUrl; else noImage">
+            <img [src]="employeeImageUrl" alt="Image" style="max-width: 200px;" class="mt-2" />
+          </div>
+
+          <ng-template #noImage>
+            <p>No image available</p>
+          </ng-template>
+        </div>
+
           </div>
           </div>
         </form>
 
-  <div class="container mt-4">
-  <div class="row">
-    <!-- g1 -->
-    <div class="col-6">
-      <div class="border p-3">
-        <h5>Documents</h5>
-        <table class="table table-bordered table-sm">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>H1</th>
-              <th>H2</th>
-              <th>H3</th>
-              <th>H4</th>
-              <th>H5</th>
+      <div class="container mt-4 px-0">
+        <div class="row">
+          <!-- g1 -->
+          <div class="col-15 mt-4">
+            <div class="border p-3">
+              <h5>Documents</h5>
+               <button type="button" (click)="AdddocumentForm()" class="btn btn-success me-2">Add</button>
+              <table class="table table-bordered  mt-2">
+              
+                <thead>
+                  <tr>
+                 
+                    <th>IdEmployee</th>
+                    <th contenteditable="true" >Document Name</th>
+                    <th>File Name</th>
+                    <th>Uploaded Date</th>
+                    <th>File Extention</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+              <tbody>
+            <tr *ngFor="let doc of employeeDocuments; let i = index" [formGroup]="documentsForm">
+                            
+                <td fxFlex="22">
+                  <label>Document </label>
+                        <select formControlName="documentName" >
+                              <option *ngFor="let doc of employeeDocuments" [value]="doc.documentName">
+                                  {{doc.documentName}}
+                              <option>
+                        </select>
+                </td>
             </tr>
-          </thead>
-          <tbody>
-            <tr><td>1</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td></tr>
-           
-          </tbody>
-        </table>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        <!-- g2 -->
+        <div class="col-15 mt-4">
+          <div class="border p-3">
+            <h5>Education Information</h5>
+            <button type="button" class="btn btn-success me-2">Add</button>
+            <table class="table table-bordered table-sm mt-2">
+              <thead>
+                <tr>
+                  <th>IdEmployee</th> 
+                  <th>CGPA</th>
+                  <th>Exam Scale </th>
+                  <th>Marks</th>
+                  <th>Major</th>
+                  <th>Passing Year</th>
+                  <th>Institute Name</th>
+                  <th>Is Foreign Institute</th>
+                  <th>Duration</th>
+                  <th>Achievement</th>
+                  <th>Education Level Name</th>
+                  <th>Result Name</th>
+                  <th>Action</th>
+                
+                </tr>
+              </thead>          
+              <tbody>
+                
+               <tr *ngFor="let edu of educations; let i = index">
+                    <td>{{ edu.idEmployee }}</td>
+                    <td contenteditable="true" >{{ edu.cgpa }}</td>
+                    <td contenteditable="true" >{{ edu.examScale }}</td>
+                    <td contenteditable="true" >{{ edu.marks }}</td>
+                    <td contenteditable="true" >{{ edu.major }}</td>
+                    <td contenteditable="true" >{{ edu.passingYear }}</td>
+                    <td contenteditable="true" >{{ edu.instituteName }}</td>
+                    <td contenteditable="true" >{{ edu.isForeignInstitute }}</td>
+                    <td contenteditable="true" >{{ edu.duration }}</td>
+                    <td contenteditable="true" >{{ edu.achievement }}</td>
+                    <td contenteditable="true" >{{ edu.educationLevelName }}</td>
+                    <td contenteditable="true" >{{ edu.resultName }}</td>
+                    <td><button type="button" class="btn btn-danger me-2">Remove</button></td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- g3 -->
+        <div class="col-15 mt-4">
+          <div class="border p-3">
+            <h5>Family Information</h5>
+            <button type="button" class="btn btn-success me-2 ">Add</button>
+            <table class="table table-bordered table-sm mt-2">
+              <thead>
+                <tr>
+                 
+                  <th>Id Employee</th>
+                  <th>Name</th>
+                  <th>Gender</th>
+                  <th>Relationship</th>
+                  <th>Date Of Birth</th>
+                  <th>Contact No</th>
+                  <th>Current Address</th>
+                  <th>Permanent Address</th>
+        
+                </tr>
+              </thead>
+              <tbody>
+                   <tr *ngFor="let fmly of family; let i = index">
+                    <td>{{ fmly.idEmployee }}</td>
+                    <td contenteditable="true" >{{ fmly.name }}</td>
+                    <td contenteditable="true" >{{ fmly.idGender }}</td>
+                    <td contenteditable="true" >{{ fmly.idRelationship }}</td>
+                    <td contenteditable="true" >{{ fmly.dateOfBirth }}</td>
+                    <td contenteditable="true" >{{ fmly.contactNo }}</td>
+                    <td contenteditable="true" >{{ fmly.currentAddress }}</td>
+                    <td contenteditable="true" >{{ fmly.permanentAddress }}</td>
+                    <td><button type="button" class="btn btn-danger me-2">Remove</button></td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- g4 -->
+        <div class="col-15 mt-4">
+          <div class="border p-3">
+            <h5>Professional Certification</h5>
+            <button type="button" class="btn btn-success me-2 mt-2">Add</button>
+            <table class="table table-bordered table-sm ">
+              <thead>
+                <tr>
+                  <th>Id Employee</th>
+                  <th>Certification Title</th>
+                  <th>Certification Institute</th>
+                  <th>Institute Location</th>
+                  <th>From Date</th>
+                  <th>To Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let pcer of professionalCertification; let i = index">
+                    <td>{{ pcer.idEmployee }}</td>
+                    <td contenteditable="true" >{{ pcer.certificationTitle}}</td>
+                    <td contenteditable="true" >{{ pcer.certificationInstitute }}</td>
+                    <td contenteditable="true" >{{ pcer.fromDate }}</td>
+                    <td contenteditable="true" >{{ pcer.toDate }}</td>
+                    <td><button type="button" class="btn btn-danger me-2">Remove</button></td>
+                  </tr>
+               
+              </tbody>
+            </table>
+          </div>
+        </div>
+
       </div>
     </div>
-
-    <!-- g2 -->
-    <div class="col-6">
-      <div class="border p-3">
-        <h5>Education Information</h5>
-        <table class="table table-bordered table-sm">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>H1</th>
-              <th>H2</th>
-              <th>H3</th>
-              <th>H4</th>
-              <th>H5</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>1</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td></tr>
-           
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-
       </div>
 
     </div>

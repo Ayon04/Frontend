@@ -30,6 +30,21 @@ export class EmployeeService {
     );
 }
 
+
+getEmployeeImage(idClient: number, id: number): Observable<Blob> {
+  const params = new HttpParams()
+    .set('Idclient', idClient.toString())
+    .set('id', id.toString());
+
+  return this.http.get(`${this.apiUrl}/employeeimage`, {
+    params,
+    responseType: 'blob'
+  }).pipe(
+    catchError(this.handleError)
+  );
+}
+
+
   private handleError(error: any) {
     console.error('API Error:', error);
     return throwError(() => new Error(error.message || 'Server Error'));
