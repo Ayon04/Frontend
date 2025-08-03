@@ -15,7 +15,6 @@ export class DropDownService {
   constructor(private http: HttpClient) {}
 
   getDepartmentDropdown(idClient: number): Observable<any> {
-    console.log('from department service',idClient)
     return this.http.get<DropDown>(`${this.api}/common/departmentdropdown/?idClient=${idClient}`)
   }
 
@@ -51,5 +50,25 @@ export class DropDownService {
    getMaritalStatusDropDown(idClient: number): Observable<any> {
     return this.http.get<any>(`${this.api}/common/maritalstatusesdropdown/?idClient=${idClient}`)
   }
+
+  getEducationLevelDropDown(idClient: number): Observable<any> {
+    return this.http.get<any>(`${this.api}/common/educationlevel/?idClient=${idClient}`)
+  }
+
+  getEducationexaminationDropDown(idClient: number): Observable<any> {
+    return this.http.get<any>(`${this.api}/common/educationexamination/?idClient=${idClient}`)
+  }
+
+  getEducationResultDropDown(idClient: number): Observable<any> {
+    return this.http.get<any>(`${this.api}/common/educationresult/?idClient=${idClient}`)
+  }
+
+   getRelationshipdownDropDown(idClient: number): Observable<any> {
+    return this.http.get<any>(`${this.api}/common/relationshipdropdown/?idClient=${idClient}`)
+  }
 }
+
+
+
+
 

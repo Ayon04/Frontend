@@ -4,7 +4,7 @@ import { EmployeeDTO } from '../../Models/EmployeeDTO';
 import { EmployeeService } from '../../Services/employee.service';
 import { DropDownService } from '../../Services/dropDown.service';
 import { RouterModule } from '@angular/router';
-import { FormArray, FormBuilder,FormControl,FormGroup,FormsModule,ReactiveFormsModule} from '@angular/forms';
+import { FormArray, FormBuilder,FormControl,FormGroup,FormsModule,ReactiveFormsModule,Validators} from '@angular/forms';
 import { DropDown } from '../../Models/DropDown';
 import { EmployeeDocumentDTO } from '../../Models/EmployeeDocumentDTO';
 import { EmployeeEducationInfoDTO } from '../../Models/EmployeeEducationInfoDTO';
@@ -22,32 +22,30 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 export class EmployeeComponent implements OnInit {
   employees: EmployeeDTO[] = [];
   selectedEmployee: EmployeeDTO | null = null;
-  //employeeForm!: FormGroup;
   employeeImageUrl: SafeUrl | null = null;
 
-   public employeeForm: FormGroup;
+  public employeeForm: FormGroup;
+  public idClient: number = 10001001;
 
-  public idClient:number = 10001001;
   departments: DropDown[] = [];
   sections: any[] = [];
   designations: any[] = [];
   genders: any[] = [];
   religions: any[] = [];
-  http: any;
   jobtyps: any[] = [];
   employeeTypes: any[] = [];
   weekoffs: any[] = [];
   MaritalStatus: any[] = [];
+  EducationLevel: any[] = [];
+  educationExaminations: any[] = [];
+  educationResults: any[] = [];
+  relationship: any[] = [];
+  educations: EmployeeEducationInfoDTO[] = [];
+  family: EmployeeFamilyInfoDTO[] = [];
+  professionalCertification: EmployeeProfessionalCertificationDTO[] = [];
 
-  employeeDocuments: EmployeeDocumentDTO [] = [];
-  educations: EmployeeEducationInfoDTO [] = [];
-  family: EmployeeFamilyInfoDTO  [] = [];
-  professionalCertification: EmployeeProfessionalCertificationDTO [] = [];
-  
   public employeeDto: EmployeeDTO;
-  formBuilder: any;
-  docitems: any[] = [];
-  
+
   constructor(
     private employeeService: EmployeeService,
     private dropdownService: DropDownService,
@@ -56,281 +54,425 @@ export class EmployeeComponent implements OnInit {
   ) {
     this.employeeDto = new EmployeeDTO();
     this.employeeForm = this.initForm();
-  
   }
 
   ngOnInit(): void {
-     //this.employeeDto = new EmployeeDTO();
-    //this.employeeForm = this.initForm();
+
+    console.log("HRM System Running");
+
+    // /this.employeeForm.disable();
+    // this.employeeEducationInfo.disabled === true;
+    // this.employeeDocuments.disabled === true;
+    // this.employeeFamilyInfos.disabled === true;
+    // this.employeeProfessionalCertifications.disabled === true;
+
     this.loadEmployees();
-    //this.loadDropDownList();
-     
     this.getDepartments(this.idClient);
     this.getDesignation(this.idClient);
     this.getJobType(this.idClient);
     this.getGender(this.idClient);
     this.getEmployeeType(this.idClient);
     this.getReligion(this.idClient);
+    this.getRelationship(this.idClient);
     this.getSection(this.idClient);
     this.getWeekOff(this.idClient);
-    this.getWeekOff(this.idClient);
     this.getMaritalStatus(this.idClient);
-   
+    this.getEducationLevel(this.idClient);
+    this.getEducationResult(this.idClient);
+    this.getEducationExam(this.idClient);
   }
 
   initForm(): FormGroup {
     return this.fb.group({
-      idClient: new FormControl(0),
+      idClient: new FormControl(this.idClient),
       id: new FormControl(0),
-      employeeName:[''] ,                  
-      employeeNameBangla: [''], 
-      fatherName:[''] , 
-      motherName:[''] , 
-      idReportingManager: [''], 
-      idJobType:[''] , 
-      idEmployeeType: [''],
-      birthDate: '',
-      joiningDate: '',
-      idGender: [''],
-      idReligion: [''],
-      idDepartment: [''],
-      idSection: [''],
-      idDesignation: [''],
-      hasOvertime: [''],
-      hasAttendanceBonus: [''],
-      idWeekOff: [''],
-      nationalIdentificationNumber: [''],
-      contactNo: [''],
-      address: [''],
-      presentAddress:[''],
-      idMaritalStatus: [''],
+      employeeName: new FormControl(),
+      employeeNameBangla: new FormControl(),
+      fatherName: new FormControl(),
+      motherName: new FormControl(),
+      idReportingManager: new FormControl(),
+      idJobType: new FormControl(),
+      idEmployeeType:new FormControl(),
+      birthDate: new FormControl(),
+      joiningDate: new FormControl(),
+      idGender: new FormControl(),
+      idReligion: new FormControl(),
+      idDepartment: new FormControl(this.employeeDto.idDepartment , Validators.required),
+      idSection: new FormControl(),
+      idDesignation: new FormControl(),
+      hasOvertime: new FormControl(),
+      hasAttendanceBonus: new FormControl(),
+      idWeekOff: new FormControl(),
+      nationalIdentificationNumber: new FormControl(),
+      contactNo: new FormControl(),
+      address: new FormControl(),
+      presentAddress: new FormControl(),
+      idMaritalStatus: new FormControl(),
       createdBy: ['admin'],
       isActive: [true],
-      employeeDocuments: new FormArray([])
-  });
+      // employeeDocuments: this.fb.array([]),
+      // employeeEducationInfos: this.fb.array([]),
+      // employeeProfessionalCertifications: this.fb.array([]),
+      // employeeFamilyInfos: this.fb.array([]),
 
+
+    });
+  }
+
+  get employeeDocuments(): FormArray {
+    return this.employeeForm.get('employeeDocuments') as FormArray;
+  }
+
+  get employeeEducationInfo(): FormArray {
+    return this.employeeForm.get('employeeEducationInfos') as FormArray;
+  }
+
+  get employeeProfessionalCertifications(): FormArray {
+  return this.employeeForm.get('employeeProfessionalCertifications') as FormArray;
+ }
+
+ get employeeFamilyInfos(): FormArray {
+  return this.employeeForm.get('employeeFamilyInfos') as FormArray;
 }
+
+
+
+
+  createDocumentForm(): FormGroup {
+    return this.fb.group({
+      idClient: [this.idClient],
+      id: [0],
+      idEmployee: [0],
+      documentName: [''],
+      fileName: [''],
+      uploadedFileExtention: [''],
+      uploadDate: [new Date()],
+      setDate: [new Date()],
+      createdBy: ['admin'],
+      documentFile: [null]
+    });
+  }
+
+  addDocument(): void {
+  const docs = this.employeeDocuments;
+  docs.push(this.createDocumentForm());
+}
+
+  removeDocument(index: number): void {
+    this.employeeDocuments.removeAt(index);
+  }
+
+
+ createEducationInfoForm(): FormGroup {
+  return this.fb.group({
+    idClient: [this.idClient],
+    id: [0],
+    idEmployee: [0],
+    idEducationLevel: [null],
+    idEducationExamination: [null],
+    idEducationResult: [null],
+    cgpa: [null],
+    examScale: [null],
+    marks: [null],
+    major: [''],
+    passingYear: [null],
+    instituteName: [''],
+    isForeignInstitute: [false],
+    duration: [null],
+    achievement: [''],
+    setDate: [new Date()],
+    createdBy: ['admin'],
+    educationLevelName: [''],
+    examinationName: [''],
+    resultName: ['']
+  });
+}
+
+  addEducationInfo(): void {
+  const ems = this.employeeEducationInfo;
+  ems.push(this.createEducationInfoForm());
+}
+
+  removeEducationInfo(index: number): void {
+    this.employeeEducationInfo.removeAt(index);
+  }
+
+  createEmployeeProfessionalCertificationsForm(): FormGroup {
+  return this.fb.group({
+    idClient: [this.idClient],
+    id: [0],
+    idEmployee: [0],
+    certificationTitle: [''],
+    certificationInstitute: [''],
+    instituteLocation: [''],
+    fromDate: [null],
+    toDate: [null],
+    setDate: [new Date()],
+    createdBy: ['admin']
+  });
+}
+
+
+addProfessionalCertification(): void {
+  this.employeeProfessionalCertifications
+  .push(this.createEmployeeProfessionalCertificationsForm());
+}
+
+removeemployeeProfessionalCertifications(index: number): void {
+    this.employeeProfessionalCertifications.removeAt(index);
+  }
+
+  createEmployeeFamilyInfoForm(): FormGroup {
+  return this.fb.group({
+    idClient: [this.idClient],
+    id: [0],
+    idEmployee: [0],
+    name: [''],
+    idGender: [null],
+    idRelationship: [null],
+    dateOfBirth: [null],
+    contactNo: [''],
+    currentAddress: [''],
+    permanentAddress: [''],
+    setDate: [new Date()],
+    createdBy: ['admin']
+  });
+}
+
+addFamilyInfo(): void {
+  this.employeeFamilyInfos.push(this.createEmployeeFamilyInfoForm());
+}
+
+removeFamilyInfo(index: number): void {
+  this.employeeFamilyInfos.removeAt(index);
+}
+
+
+
+  clearForm(): void {
+    this.employeeForm.reset();
+    this.employeeEducationInfo.clear(); 
+    this.employeeDocuments.clear(); 
+    this.employeeProfessionalCertifications.clear(); 
+    this.employeeFamilyInfos.clear(); 
+  }
 
   loadEmployees(): void {
     this.employeeService.getAllEmployees(this.idClient).subscribe(data => {
       this.employees = data;
-      this.employeeForm.disable();
     });
   }
-
-   loadDropDownList(): void {
-     this.getDepartments(this.idClient);
-     this.getDesignation(this.idClient);
-     this.getJobType(this.idClient);
-     this.getGender(this.idClient);
-     this.getEmployeeType(this.idClient);
-     this.getReligion(this.idClient);
-     this.getSection(this.idClient);
-     this.getWeekOff(this.idClient);
-     this.getMaritalStatus(this.idClient);
-
-    //   this.dropdownService.getDesignationDropdown(this.idClient).subscribe(data => {
-    //   this.departments = data;
-
-    // });
-  }
-
-  getDepartments(idClient:number): void {
-
-    this.dropdownService.getDepartmentDropdown(idClient).subscribe({
-      next: data => {
-        this.departments = data;
-        },
-     
-      
-    });
-  }
-
-  getDesignation(idClient:number): void {
-    this.dropdownService.getDesignationDropdown(idClient).subscribe({
-      next: data => {
-        this.designations = data;
-      },
-
-    });
-  }
-
-    getJobType(idClient:number): void {
-    this.dropdownService.getJobTypeDropDown(idClient).subscribe({
-      next: data => {
-        this.jobtyps = data;
-      },
-
-    });
-
-  }
-
-    getGender(idClient:number): void {
-    this.dropdownService.getGenderDropDown(idClient).subscribe({
-      next: data => {
-        this.genders = data;
-      },
-
-    });
-
-  }
-
-    getEmployeeType(idClient:number): void {
-    this.dropdownService.getEmployueeTypesDropDown(idClient).subscribe({
-      next: data => {
-        this.employeeTypes = data;
-      },
-
-    });
-
-  }
-
-
-    getReligion(idClient:number): void {
-    this.dropdownService.getReligionDropDown(idClient).subscribe({
-      next: data => {
-        this.religions = data;
-      },
-
-    });
-
-  }
-
-    getSection(idClient:number): void {
-    this.dropdownService.getSectionDropDown(idClient).subscribe({
-      next: data => {
-        this.sections = data;
-      },
-
-    });
-
-  }
-
-    getWeekOff(idClient:number): void {
-    this.dropdownService.getWeekOffDropDown(idClient).subscribe({
-      next: data => {
-        this.weekoffs = data;
-      },
-
-    });
-
-  }
-    getMaritalStatus(idClient:number): void {
-    this.dropdownService.getMaritalStatusDropDown(idClient).subscribe({
-      next: data => {
-        this.MaritalStatus = data;
-      },
-
-    });
-
-  }
-
-clearForm() {
-
-this.employeeForm.reset();
-}
-//   getDepartments(): void {
-//   this.dropdownService.getDepartmentDropdown(this.idClient).subscribe(
-//     data => {
-//       console.log('ID:', this.idClient);
-//       this.departments = data;
-//       console.log('DATA:', data);
-//     },
-//     error => {
-//       console.error('Error fetching departments:', error);
-//     }
-//   );
-// }
-
 
   loadEmployeeToForm(emp: EmployeeDTO): void {
     this.selectedEmployee = emp;
-    console.log('Fetching employee by ID:', emp.id);
 
     this.employeeService.getEmployeeById(this.idClient, emp.id).subscribe({
       next: (data) => {
-
-        const employeeData = data as unknown as EmployeeDTO;
+        const employeeData = data as EmployeeDTO;
         this.employeeForm.patchValue({
-          idClient: employeeData.idClient,
-          id: employeeData.id,
-          employeeName: employeeData.employeeName,
-          employeeNameBangla: employeeData.employeeNameBangla,
-          fatherName: employeeData.fatherName,
-          motherName: employeeData.motherName,
-          idReportingManager: data.idReportingManager,
-          idJobType: data.idJobType,
-          idEmployeeType: data.idEmployeeType,
-          birthDate: this.formatDateToInput(data.birthDate),
-          joiningDate: this.formatDateToInput(data.joiningDate),
-          idGender: data.idGender,
-          idReligion: data.idReligion,
-          idDepartment: data.idDepartment,
-          idSection: data.idSection,
-          idDesignation: data.idDesignation,
-          hasOvertime: data.hasOvertime ?? false,
-          hasAttendanceBonus: data.hasAttendenceBonus ?? false,  
-          idWeekOff: data.idWeekOff,
-          nationalIdentificationNumber: data.nationalIdentificationNumber,
-          contactNo: data.contactNo,
-          address: data.address,
-          presentAddress:data.presentAddress,
-          idMaritalStatus: data.idMaritalStatus,
-          createdBy: data.createdBy,
-          isActive: data.isActive ?? true,
+          ...employeeData,
+          birthDate: this.formatDateToInput(employeeData.birthDate),
+          joiningDate: this.formatDateToInput(employeeData.joiningDate),
+          hasOvertime: employeeData.hasOvertime ?? false,
+          hasAttendanceBonus: employeeData.hasAttendenceBonus ?? false,
+          isActive: employeeData.isActive ?? true
         });
 
-      this.employeeDocuments = employeeData.employeeDocuments ?? [];
-      this.educations = employeeData.employeeEducationInfos ?? [];
-      this.family = employeeData.employeeFamilyInfos ?? [];
-      this.professionalCertification = employeeData.employeeProfessionalCertifications ?? [];
+        // Reset FormArrays
+        this.employeeDocuments.clear();
+        (employeeData.employeeDocuments || []).forEach(doc => {
+          this.employeeDocuments.push(this.fb.group(doc));
+        });
 
+        this.employeeEducationInfo.clear();
+        (employeeData.employeeEducationInfos || []).forEach(edu => {
+          const eduForm = this.createEducationInfoForm();
+          eduForm.patchValue(edu);
+          this.employeeEducationInfo.push(eduForm);
+        });
+
+        this.employeeProfessionalCertifications.clear();
+        (employeeData.employeeProfessionalCertifications || []).forEach(cert => {
+          const certForm = this.createEmployeeProfessionalCertificationsForm();
+          certForm.patchValue(cert);
+          this.employeeProfessionalCertifications.push(certForm);
+        });
+
+        this.employeeFamilyInfos.clear();
+        (employeeData.employeeFamilyInfos || []).forEach(fam => {
+          const famForm = this.createEmployeeFamilyInfoForm();
+          famForm.patchValue(fam);
+          this.employeeFamilyInfos.push(famForm);
+        });
+
+
+        this.educations = employeeData.employeeEducationInfos ?? [];
+        this.family = employeeData.employeeFamilyInfos ?? [];
+        this.professionalCertification = employeeData.employeeProfessionalCertifications ?? [];
       },
       error: (error) => {
-        console.error('Error fetching employee data:', error);
+        console.error('Error loading employee:', error);
       }
     });
-
   }
 
- loadEmployeeImageToForm(emp: EmployeeDTO): void {
-  this.selectedEmployee = emp;
+  loadEmployeeImageToForm(emp: EmployeeDTO): void {
+    this.selectedEmployee = emp;
 
-  this.employeeService.getEmployeeImage(this.idClient, emp.id).subscribe({
-    next: (blob: Blob) => {
-      const objectURL = URL.createObjectURL(blob);
+    this.employeeService.getEmployeeImage(this.idClient, emp.id).subscribe({
+      next: (blob: Blob) => {
+        const objectURL = URL.createObjectURL(blob);
+        this.employeeImageUrl = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+      },
+      error: (error) => {
+        console.error('Error loading image:', error);
+      }
+    });
+  }
 
-      this.employeeImageUrl = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-    },
-    error: (error) => {
-      console.error('Error fetching employee image:', error);
-    }
-  });
-}
-
-formatDateToInput(date: any): string {
+  formatDateToInput(date: any): string {
     if (!date) return '';
     const d = new Date(date);
     const offset = d.getTimezoneOffset();
     const localDate = new Date(d.getTime() - offset * 60000);
-    return localDate.toISOString().split('T')[0]; 
-}
+    return localDate.toISOString().split('T')[0];
+  }
 
-// addDocument():void{
-//   this.docitems.push(this.AdddocumentForm());
-//   this.docitems = this.documentsForm.get('employeeDocuments') as FormArray;  
-// }
-
-createdocumentForm(): FormGroup {
-    return this.fb.group({
-      documentName: '',
-      fileName: '',
-      uploadedFileExtention: ''
+  // Dropdown loaders
+  getDepartments(idClient: number): void {
+    this.dropdownService.getDepartmentDropdown(idClient).subscribe({
+      next: data => this.departments = data
     });
   }
 
-Adddocument(){
-  			this.employeeDocuments.push(this.createdocumentForm());
-        
+  getDesignation(idClient: number): void {
+    this.dropdownService.getDesignationDropdown(idClient).subscribe({
+      next: data => this.designations = data
+    });
   }
+
+  getJobType(idClient: number): void {
+    this.dropdownService.getJobTypeDropDown(idClient).subscribe({
+      next: data => this.jobtyps = data
+    });
+  }
+
+  getGender(idClient: number): void {
+    this.dropdownService.getGenderDropDown(idClient).subscribe({
+      next: data => this.genders = data
+    });
+  }
+
+  getEmployeeType(idClient: number): void {
+    this.dropdownService.getEmployueeTypesDropDown(idClient).subscribe({
+      next: data => this.employeeTypes = data
+    });
+  }
+
+  getReligion(idClient: number): void {
+    this.dropdownService.getReligionDropDown(idClient).subscribe({
+      next: data => this.religions = data
+    });
+  }
+
+  getSection(idClient: number): void {
+    this.dropdownService.getSectionDropDown(idClient).subscribe({
+      next: data => this.sections = data
+    });
+  }
+
+  getWeekOff(idClient: number): void {
+    this.dropdownService.getWeekOffDropDown(idClient).subscribe({
+      next: data => this.weekoffs = data
+    });
+  }
+
+  getMaritalStatus(idClient: number): void {
+    this.dropdownService.getMaritalStatusDropDown(idClient).subscribe({
+      next: data => this.MaritalStatus = data
+    });
+  }
+
+  getEducationLevel(idClient: number): void {
+    this.dropdownService.getEducationLevelDropDown(idClient).subscribe({
+      next: data => this.EducationLevel = data
+    });
+  }
+
+  getEducationExam(idClient: number): void {
+    this.dropdownService.getEducationexaminationDropDown(idClient).subscribe({
+      next: data => this.educationExaminations = data
+    });
+  }
+
+   getEducationResult(idClient: number): void {
+    this.dropdownService.getEducationResultDropDown(idClient).subscribe({
+      next: data => this.educationResults = data
+    });
+  }
+
+  getRelationship(idClient: number): void {
+    this.dropdownService.getRelationshipdownDropDown(idClient).subscribe({
+      next: data => this.relationship = data
+    });
+  }
+
+  updateDocumentFile(doc: EmployeeDocumentDTO, file: File): void {
+  doc.fileName = file.name;
+  doc.uploadedFileExtention = file.name.split('.').pop() || '';
+  doc.documentFile = file;
+  doc.uploadDate = new Date();
+}
+
+onFileSelected(event: Event, index: number): void {
+  const input = event.target as HTMLInputElement;
+
+  if (input.files && input.files.length > 0) {
+    const file = input.files[0];
+
+    // Get the FormGroup from the FormArray
+    const docFormGroup = this.employeeDocuments.at(index);
+    const doc: EmployeeDocumentDTO = docFormGroup.value;
+
+    this.updateDocumentFile(doc, file);           // Call your method
+    docFormGroup.patchValue(doc);                 // Update the form
+  }
+}
+
+
+add(): void {
+  if (this.employeeForm.invalid) {
+    console.warn('Form is invalid');
+    return;
+  }
+
+  this.employeeForm.enable(); // temporarily enable if any part is disabled
+
+  const formValue = this.employeeForm.getRawValue();
+  console.log('form value', formValue);
+
+  // const employeeDto = new EmployeeDTO({
+  //   ...formValue,
+  //   employeeDocuments: formValue.employeeDocuments || [],
+  //   employeeEducationInfos: formValue.employeeEducationInfos || [],
+  //   employeeProfessionalCertifications: formValue.employeeProfessionalCertifications || [],
+  //   employeeFamilyInfos: formValue.employeeFamilyInfos || []
+  // });
+
+  this.employeeService.createEmployee(formValue).subscribe({
+    next: (res) => {
+      console.log('mployee saved successfully:', res);
+      alert('Employee saved successfully!');
+      this.clearForm(); 
+      this.employeeForm.disable(); 
+    },
+    error: (err) => {
+      console.error('Error saving employee:', err);
+      alert('Failed to save employee.');
+    }
+  });
+}
+
+
+
 }

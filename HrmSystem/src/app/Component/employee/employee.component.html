@@ -33,7 +33,7 @@
 
         <!-- Button Actions -->
         <div class="d-flex justify-content-end mb-3">
-          <button type="button" class="btn btn-primary me-2">Add</button>
+          <button type="button" (click)="add()" class="btn btn-primary me-2">Add</button>
           <button type="button" class="btn btn-warning me-2">Update</button>
           <button type="button" class="btn btn-danger me-2">Delete</button>
           <button (click)="clearForm()" type="button" class="btn btn-secondary">Clear</button>
@@ -44,7 +44,8 @@
           <div class="row mt-3">
             <div class="col">
               <label for="name">Employee Name</label>
-              <input id="name" type="text" name="name" value="" class="form-control mt-1" formControlName="employeeName">
+              <input id="name" type="text" name="name" value="" class="form-control mt-1"
+                formControlName="employeeName">
             </div>
 
             <div class="col">
@@ -72,9 +73,9 @@
             <div class="col">
               <label for="IdJobType">Job Type</label>
               <select class="form-select mt-1" formControlName="idJobType">
-            
+
                 <option *ngFor="let job of jobtyps" [value]="job.value">
-                      {{job.text}}
+                  {{job.text}}
                 </option>
               </select>
             </div>
@@ -83,7 +84,7 @@
               <label for="IdEmployeeType">Employee Type</label>
               <select class="form-select mt-1" formControlName="idEmployeeType">
                 <option *ngFor="let emp of employeeTypes" [value]="emp.value">
-                      {{emp.text}}
+                  {{emp.text}}
                 </option>
               </select>
             </div>
@@ -105,9 +106,9 @@
               <label for="IdGender">Gender</label>
               <select class="form-select mt-1" formControlName="idGender">
                 <option value="">Select Gender</option>
-               <option *ngFor="let gen of genders" [value]="gen.value">
-                      {{gen.text}}
-              </option>
+                <option *ngFor="let gen of genders" [value]="gen.value">
+                  {{gen.text}}
+                </option>
               </select>
             </div>
 
@@ -115,302 +116,358 @@
               <label for="IdReligion">Religion</label>
               <select class="form-select mt-1" formControlName="idReligion">
                 <option *ngFor="let rel of religions" [value]="rel.value">
-                      {{rel.text}}
-              </option>
-              </select>
-            </div>
-
-            <div class="col">
-                  <label class="form-label">Department</label>
-                  <select class="form-select" formControlName="idDepartment">
-                    <option *ngFor="let dept of departments" [value]="dept.value">
-                      {{dept.text}}
-                    </option>
-                  </select>
-                </div>
-
-          <div class="row mt-3">
-            <div class="col">
-              <label for="IdSection">Section</label>
-              <select class="form-select mt-1" formControlName="idSection">
-               <option *ngFor="let sec of sections" [value]="sec.value">
-                      {{sec.text}}
-               </option>
-              </select>
-            </div>
-
-            <div class="col">
-              <label for="IdDesignation">Designation</label>
-              <select class="form-select mt-1" formControlName="idDesignation">
-               
-                 <option *ngFor="let desig of designations" [value]="desig.value">
-                      {{desig.text}}
+                  {{rel.text}}
                 </option>
               </select>
             </div>
 
             <div class="col">
-              <label>Has Overtime?</label>
-              <div class="d-flex">
-                <div class="form-check me-3">
-                  <input type="radio" class="form-check-input" [value]="true" formControlName="hasOvertime"
-                    id="overtimeYes">
-                  <label class="form-check-label" for="overtimeYes">Yes</label>
-                </div>
-                <div class="form-check">
-                  <input type="radio" class="form-check-input" [value]="false" formControlName="hasOvertime"
-                    id="overtimeNo">
-                  <label class="form-check-label" for="overtimeNo">No</label>
-                </div>
-              </div>
-            </div>
-
-            <div class="col">
-              <label>Has Attendance Bonus?</label>
-              <div class="d-flex">
-                <div class="form-check me-3">
-                  <input type="radio" class="form-check-input" [value]="true" formControlName="hasAttendanceBonus"
-                    id="bonusYes">
-                  <label class="form-check-label" for="bonusYes">Yes</label>
-                </div>
-                <div class="form-check">
-                  <input type="radio" class="form-check-input" [value]="false" formControlName="hasAttendanceBonus"
-                    id="bonusNo">
-                  <label class="form-check-label" for="bonusNo">No</label>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row mt-3">
-            <div class="col">
-              <label for="IdWeekOff">Week Off</label>
-              <select class="form-select mt-1" formControlName="idWeekOff">
-              <option *ngFor="let wkf of weekoffs" [value]="wkf.value">
-                      {{wkf.text}}
-              </option>
+              <label class="form-label">Department</label>
+              <select class="form-select" formControlName="idDepartment">
+                <option *ngFor="let dept of departments" [ngValue]="dept.value">
+                  {{dept.text}} - {{dept.value}}
+                </option>
               </select>
             </div>
 
-            <div class="col">
-              <label for="NationalIdentificationNumber">NID</label>
-              <input id="NationalIdentificationNumber" type="text" class="form-control mt-1"
-                formControlName="nationalIdentificationNumber">
-            </div>
+            <div class="row mt-3">
+              <div class="col">
+                <label for="IdSection">Section</label>
+                <select class="form-select mt-1" formControlName="idSection">
+                  <option *ngFor="let sec of sections" [value]="sec.value">
+                    {{sec.text}}
+                  </option>
+                </select>
+              </div>
 
-            <div class="col">
-              <label for="ContactNo">Contact No</label>
-              <input id="ContactNo" type="text" class="form-control mt-1" formControlName="contactNo">
-            </div>
+              <div class="col">
+                <label for="IdDesignation">Designation</label>
+                <select class="form-select mt-1" formControlName="idDesignation">
 
-            <div class="col">
-              <label for="IdMaritalStatus">Marital Status</label>
-              <select class="form-select mt-1" formControlName="idMaritalStatus">
-                <option value="">Select Marital Status</option>
-               <option *ngFor="let mt of MaritalStatus" [value]="mt.value">
-                      {{mt.text}}
-              </option>
-              </select>
-            </div>
-          </div>
+                  <option *ngFor="let desig of designations" [value]="desig.value">
+                    {{desig.text}}
+                  </option>
+                </select>
+              </div>
 
-         
-
-          <div class="row mt-3">
-
-             <div class="col">
-              <label>Is Active?</label>
-              <div class="d-flex">
-                <div class="form-check me-3">
-                  <input class="form-check-input" type="radio" [value]="true" formControlName="isActive"
-                    id="isActiveYes">
-                  <label class="form-check-label" for="isActiveYes">Yes</label>
+              <div class="col">
+                <label>Has Overtime?</label>
+                <div class="d-flex">
+                  <div class="form-check me-3">
+                    <input type="radio" class="form-check-input" [value]="true" formControlName="hasOvertime"
+                      id="overtimeYes">
+                    <label class="form-check-label" for="overtimeYes">Yes</label>
+                  </div>
+                  <div class="form-check">
+                    <input type="radio" class="form-check-input" [value]="false" formControlName="hasOvertime"
+                      id="overtimeNo">
+                    <label class="form-check-label" for="overtimeNo">No</label>
+                  </div>
                 </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" [value]="false" formControlName="isActive"
-                    id="isActiveNo">
-                  <label class="form-check-label" for="isActiveNo">No</label>
+              </div>
+
+              <div class="col">
+                <label>Has Attendance Bonus?</label>
+                <div class="d-flex">
+                  <div class="form-check me-3">
+                    <input type="radio" class="form-check-input" [value]="true" formControlName="hasAttendanceBonus"
+                      id="bonusYes">
+                    <label class="form-check-label" for="bonusYes">Yes</label>
+                  </div>
+                  <div class="form-check">
+                    <input type="radio" class="form-check-input" [value]="false" formControlName="hasAttendanceBonus"
+                      id="bonusNo">
+                    <label class="form-check-label" for="bonusNo">No</label>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div class="col">
-              <label for="Address">Address</label>
-              <input id="Address" type="text" class="form-control mt-1" formControlName="address">
+            <div class="row mt-3">
+              <div class="col">
+                <label for="IdWeekOff">Week Off</label>
+                <select class="form-select mt-1" formControlName="idWeekOff">
+                  <option *ngFor="let wkf of weekoffs" [value]="wkf.value">
+                    {{wkf.text}}
+                  </option>
+                </select>
+              </div>
+
+              <div class="col">
+                <label for="NationalIdentificationNumber">NID</label>
+                <input id="NationalIdentificationNumber" type="text" class="form-control mt-1"
+                  formControlName="nationalIdentificationNumber">
+              </div>
+
+              <div class="col">
+                <label for="ContactNo">Contact No</label>
+                <input id="ContactNo" type="text" class="form-control mt-1" formControlName="contactNo">
+              </div>
+
+              <div class="col">
+                <label for="IdMaritalStatus">Marital Status</label>
+                <select class="form-select mt-1" formControlName="idMaritalStatus">
+                  <option value="">Select Marital Status</option>
+                  <option *ngFor="let mt of MaritalStatus" [value]="mt.value">
+                    {{mt.text}}
+                  </option>
+                </select>
+              </div>
             </div>
 
-            <div class="col">
-              <label for="ParmanentAddress">Parmanent Address</label>
-              <input id="ParmanentAddress" type="text" class="form-control mt-1" formControlName="presentAddress">
+
+
+            <div class="row mt-3">
+
+              <div class="col">
+                <label>Is Active?</label>
+                <div class="d-flex">
+                  <div class="form-check me-3">
+                    <input class="form-check-input" type="radio" [value]="true" formControlName="isActive"
+                      id="isActiveYes">
+                    <label class="form-check-label" for="isActiveYes">Yes</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" [value]="false" formControlName="isActive"
+                      id="isActiveNo">
+                    <label class="form-check-label" for="isActiveNo">No</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col">
+                <label for="Address">Address</label>
+                <input id="Address" type="text" class="form-control mt-1" formControlName="address">
+              </div>
+
+              <div class="col">
+                <label for="ParmanentAddress">Parmanent Address</label>
+                <input id="ParmanentAddress" type="text" class="form-control mt-1" formControlName="presentAddress">
+              </div>
+
+              <div class="col ">
+                <label for="profileImage" class="form-label">Upload Image</label>
+                <input type="file" class="form-control" id="profileImage" accept="image/*">
+
+                <div *ngIf="employeeImageUrl; else noImage">
+                  <img [src]="employeeImageUrl" alt="Image" style="max-width: 200px;" class="mt-2" />
+                </div>
+
+                <ng-template #noImage>
+                  <p>No image available</p>
+                </ng-template>
+              </div>
+
             </div>
-
-        <div class="col " >
-          <label for="profileImage" class="form-label">Upload Image</label>
-          <input type="file" class="form-control" id="profileImage" accept="image/*">
-
-         <div *ngIf="employeeImageUrl; else noImage">
-            <img [src]="employeeImageUrl" alt="Image" style="max-width: 200px;" class="mt-2" />
           </div>
 
-          <ng-template #noImage>
-            <p>No image available</p>
-          </ng-template>
-        </div>
 
-          </div>
-          </div>
+          <!-- <div class="container mt-4 px-0">
+            <div class="row">
+              <div class="col-15 mt-4">
+                <div class="border p-3">
+                  <h5>Documents</h5>
+                  <button type="button" (click)="addDocument()" class="btn btn-success me-2">Add</button>
+
+                  <div>
+                    <table class="table table-bordered mt-2">
+                      <thead>
+                        <tr>
+                          <th>IdEmployee</th>
+                          <th>Document Name</th>
+                          <th>Upload File</th>
+                          <th>File Name</th>
+                          <th>Uploaded Date</th>
+                          <th>File Extension</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody formArrayName="employeeDocuments">
+                        <tr *ngFor="let docCtrl of employeeDocuments.controls; let i = index" [formGroupName]="i">
+                          <td><input readonly type="text" formControlName="idEmployee" class="form-control" /></td>
+                          <td><input type="text" formControlName="documentName" class="form-control" /></td>
+                          <td><input type="file" (change)="onFileSelected($event, i)"  formControlName="documentFile" class="form-control" /></td>
+
+                          <td><input readonly type="text" formControlName="fileName" class="form-control" /></td>
+                          <td><input readonly ="date" formControlName="uploadDate" class="form-control" /></td>
+                          <td><input readonly type="text" formControlName="uploadedFileExtention" class="form-control" /></td>
+                          <td>
+                            <button type="button" class="btn btn-danger btn-sm"
+                              (click)="removeDocument(i)">Remove</button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="col-15 mt-4">
+                <div class="border p-3">
+                  <h5>Education Information</h5>
+                  <button type="button" (click)="addEducationInfo()" class="btn btn-success me-2">Add</button>
+                  <table class="table table-bordered table-sm mt-2">
+                   <thead>
+                        <tr>
+                          <th>IdEmployee</th>
+                          <th>Education Level</th>
+                          <th>Examination</th>
+                          <th>Result</th>
+                          <th>CGPA</th>
+                          <th>Exam Scale</th>
+                          <th>Marks</th>
+                          <th>Major</th>
+                          <th>Passing Year</th>
+                          <th>Institute Name</th>
+                          <th>Is Foreign Institute</th>
+                          <th>Duration</th>
+                          <th>Achievement</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody formArrayName="employeeEducationInfos">
+                        <tr *ngFor="let edu of employeeEducationInfo.controls; let i = index" [formGroupName]="i">
+                          <td><input readonly type="text" formControlName="idEmployee" class="form-control" /></td>
+
+                          <td>
+                            <select class="form-select" formControlName="idEducationLevel">
+                              <option *ngFor="let el of EducationLevel" [value]="el.value">{{ el.text }}</option>
+                            </select>
+                          </td>
+
+                          <td>
+                            <select class="form-control" formControlName="idEducationExamination" >
+                              <option *ngFor="let exam of educationExaminations" [value]="exam.value">{{ exam.text }}</option>
+                            </select>
+                          </td>
+
+                           <td>
+                            <select formControlName="idEducationResult" class="form-control">
+                              <option *ngFor="let result of educationResults" [value]="result.value">{{ result.text }}</option>
+                            </select>
+                          </td>
+
+
+                          <td><input type="text" formControlName="cgpa" class="form-control" /></td>
+
+                          <td><input type="text" formControlName="examScale" class="form-control"/></td>
+
+                          <td><input type="text" formControlName="marks" class="form-control"  /></td>
+
+                          <td><input type="text" formControlName="major" class="form-control" /></td>
+
+                          <td><input type="text" formControlName="passingYear" class="form-control" /></td>
+
+                          <td><input type="text" formControlName="instituteName" class="form-control" /></td>
+
+                          <td>
+                            <select formControlName="isForeignInstitute" class="form-control">
+                              <option [ngValue]=1>Yes</option>
+                              <option [ngValue]=0>No</option>
+                            </select>
+                          </td>
+
+                          <td><input type="text" formControlName="duration" class="form-control" /></td>
+
+                          <td><input type="text" formControlName="achievement" class="form-control" /></td>
+
+                         
+                          <td>
+                            <button type="button" class="btn btn-danger btn-sm" (click)="removeEducationInfo(i)">Remove</button>
+                          </td>
+                        </tr>
+                      </tbody>
+
+                  </table>
+                </div>
+              </div>
+
+              <div class="col-15 mt-4">
+                <div class="border p-3">
+                  <h5>Family Information</h5>
+                    <button (click)="addFamilyInfo()" type="button" class="btn btn-success me-2">Add</button>
+                  <table class="table table-bordered table-sm mt-2">
+                    <thead>
+                      <tr>
+                        <th>Id Employee</th>
+                        <th>Name</th>
+                        <th>Gender</th>
+                        <th>Relationship</th>
+                        <th>Date Of Birth</th>
+                        <th>Contact No</th>
+                        <th>Current Address</th>
+                        <th>Permanent Address</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                   <tbody formArrayName="employeeFamilyInfos">
+                      <tr *ngFor="let fam of employeeFamilyInfos.controls; let i = index" [formGroupName]="i">
+                        <td><input readonly formControlName="idEmployee" class="form-control" /></td>
+                        
+                        <td><input type="text" formControlName="name" class="form-control" /></td>
+
+                        <td>
+                          <select formControlName="idGender" class="form-control">
+                            <option *ngFor="let gender of genders" [value]="gender.value">{{ gender.text }}</option>
+                          </select>
+                        </td>
+
+                        <td>
+                          <select formControlName="idRelationship" class="form-control">
+                            <option *ngFor="let rel of relationship" [value]="rel.value">{{ rel.text }}</option>
+                          </select>
+                        </td>
+
+                        <td><input type="date" formControlName="dateOfBirth" class="form-control" /></td>
+                        <td><input type="text" formControlName="contactNo" class="form-control" /></td>
+                        <td><input type="text" formControlName="currentAddress" class="form-control" /></td>
+                        <td><input type="text" formControlName="permanentAddress" class="form-control" /></td>
+
+                        <td>
+                          <button type="button" class="btn btn-danger btn-sm" (click)="removeFamilyInfo(i)">Remove</button>
+                        </td>
+                      </tr>
+                    </tbody>
+
+                  </table>
+                </div>
+              </div>
+
+              <div class="col-15 mt-4">
+                <div class="border p-3">
+                  <h5>Professional Certification</h5>
+               <button type="button" (click)="addProfessionalCertification()" class="btn btn-success me-2">Add</button>
+                  <table class="table table-bordered table-sm mt-2">
+                    <thead>
+                      <tr>
+                        <th>Id Employee</th>
+                        <th>Certification Title</th>
+                        <th>Certification Institute</th>
+                        <th>Institute Location</th>
+                        <th>From Date</th>
+                        <th>To Date</th>
+                         <th>Action</th>
+                      </tr>
+                    </thead>
+                   <tbody formArrayName="employeeProfessionalCertifications">
+                      <tr *ngFor="let cert of employeeProfessionalCertifications.controls; let i = index" [formGroupName]="i">
+                        <td><input readonly type="text" formControlName="idEmployee" class="form-control" /></td>
+                        <td><input formControlName="certificationTitle" class="form-control" /></td>
+                        <td><input formControlName="certificationInstitute" class="form-control" /></td>
+                        <td><input formControlName="instituteLocation" class="form-control" /></td>
+                        <td><input formControlName="fromDate" type="date" class="form-control" /></td>
+                        <td><input formControlName="toDate" type="date" class="form-control" /></td>
+                        <td><button type="button" class="btn btn-danger btn-sm" (click)="removeemployeeProfessionalCertifications(i)">Remove</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+          </div> -->
         </form>
-
-      <div class="container mt-4 px-0">
-        <div class="row">
-          <!-- g1 -->
-          <div class="col-15 mt-4">
-            <div class="border p-3">
-              <h5>Documents</h5>
-               <button type="button" (click)="Adddocument()" class="btn btn-success me-2">Add</button>
-              <table class="table table-bordered  mt-2" formArrayName="employeeDocuments">
-                <thead>
-                  <tr>
-                    <th>IdEmployee</th>
-                    <th contenteditable="true">Document Name</th>
-                    <th>File Name</th>
-                    <th>Uploaded Date</th>
-                    <th>File Extention</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let doc of employeeDocuments; let i = index">
-                    <td fxFlex="22">
-                      <label>Document </label>
-                      <select formControlName="documentName">
-                        <option *ngFor="let doc of employeeDocuments" [value]="doc.documentName">
-                          {{doc.documentName}}
-                        <option>
-                      </select>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-        <!-- g2 -->
-        <div class="col-15 mt-4">
-          <div class="border p-3">
-            <h5>Education Information</h5>
-            <button type="button" class="btn btn-success me-2">Add</button>
-            <table class="table table-bordered table-sm mt-2">
-              <thead>
-                <tr>
-                  <th>IdEmployee</th> 
-                  <th>CGPA</th>
-                  <th>Exam Scale </th>
-                  <th>Marks</th>
-                  <th>Major</th>
-                  <th>Passing Year</th>
-                  <th>Institute Name</th>
-                  <th>Is Foreign Institute</th>
-                  <th>Duration</th>
-                  <th>Achievement</th>
-                  <th>Education Level Name</th>
-                  <th>Result Name</th>
-                  <th>Action</th>
-                
-                </tr>
-              </thead>          
-              <tbody>
-                
-               <tr *ngFor="let edu of educations; let i = index">
-                    <td>{{ edu.idEmployee }}</td>
-                    <td contenteditable="true" >{{ edu.cgpa }}</td>
-                    <td contenteditable="true" >{{ edu.examScale }}</td>
-                    <td contenteditable="true" >{{ edu.marks }}</td>
-                    <td contenteditable="true" >{{ edu.major }}</td>
-                    <td contenteditable="true" >{{ edu.passingYear }}</td>
-                    <td contenteditable="true" >{{ edu.instituteName }}</td>
-                    <td contenteditable="true" >{{ edu.isForeignInstitute }}</td>
-                    <td contenteditable="true" >{{ edu.duration }}</td>
-                    <td contenteditable="true" >{{ edu.achievement }}</td>
-                    <td contenteditable="true" >{{ edu.educationLevelName }}</td>
-                    <td contenteditable="true" >{{ edu.resultName }}</td>
-                    <td><button type="button" class="btn btn-danger me-2">Remove</button></td>
-                  </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- g3 -->
-        <div class="col-15 mt-4">
-          <div class="border p-3">
-            <h5>Family Information</h5>
-            <button type="button" class="btn btn-success me-2 ">Add</button>
-            <table class="table table-bordered table-sm mt-2">
-              <thead>
-                <tr>
-                 
-                  <th>Id Employee</th>
-                  <th>Name</th>
-                  <th>Gender</th>
-                  <th>Relationship</th>
-                  <th>Date Of Birth</th>
-                  <th>Contact No</th>
-                  <th>Current Address</th>
-                  <th>Permanent Address</th>
-        
-                </tr>
-              </thead>
-              <tbody>
-                   <tr *ngFor="let fmly of family; let i = index">
-                    <td>{{ fmly.idEmployee }}</td>
-                    <td contenteditable="true" >{{ fmly.name }}</td>
-                    <td contenteditable="true" >{{ fmly.idGender }}</td>
-                    <td contenteditable="true" >{{ fmly.idRelationship }}</td>
-                    <td contenteditable="true" >{{ fmly.dateOfBirth }}</td>
-                    <td contenteditable="true" >{{ fmly.contactNo }}</td>
-                    <td contenteditable="true" >{{ fmly.currentAddress }}</td>
-                    <td contenteditable="true" >{{ fmly.permanentAddress }}</td>
-                    <td><button type="button" class="btn btn-danger me-2">Remove</button></td>
-                  </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- g4 -->
-        <div class="col-15 mt-4">
-          <div class="border p-3">
-            <h5>Professional Certification</h5>
-            <button type="button" class="btn btn-success me-2 mt-2">Add</button>
-            <table class="table table-bordered table-sm ">
-              <thead>
-                <tr>
-                  <th>Id Employee</th>
-                  <th>Certification Title</th>
-                  <th>Certification Institute</th>
-                  <th>Institute Location</th>
-                  <th>From Date</th>
-                  <th>To Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let pcer of professionalCertification; let i = index">
-                    <td>{{ pcer.idEmployee }}</td>
-                    <td contenteditable="true" >{{ pcer.certificationTitle}}</td>
-                    <td contenteditable="true" >{{ pcer.certificationInstitute }}</td>
-                    <td contenteditable="true" >{{ pcer.fromDate }}</td>
-                    <td contenteditable="true" >{{ pcer.toDate }}</td>
-                    <td><button type="button" class="btn btn-danger me-2">Remove</button></td>
-                  </tr>
-               
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-      </div>
-    </div>
       </div>
 
     </div>

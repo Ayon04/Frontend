@@ -12,6 +12,11 @@ export class EmployeeService {
 
   constructor(private http: HttpClient) {}
 
+
+  createEmployee(employee: EmployeeDTO): Observable<EmployeeDTO> {
+    return this.http.post<EmployeeDTO>(this.apiUrl, employee);
+  }
+
   getAllEmployees(idClient: number): Observable<EmployeeDTO[]> {
     return this.http.get<EmployeeDTO[]>(`${this.apiUrl}/?idClient=${idClient}`)
       .pipe(
@@ -43,8 +48,6 @@ getEmployeeImage(idClient: number, id: number): Observable<Blob> {
     catchError(this.handleError)
   );
 }
-
-
   private handleError(error: any) {
     console.error('API Error:', error);
     return throwError(() => new Error(error.message || 'Server Error'));
