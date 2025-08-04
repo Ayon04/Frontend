@@ -110,10 +110,10 @@ export class EmployeeComponent implements OnInit {
       idMaritalStatus: new FormControl(),
       createdBy: ['admin'],
       isActive: [true],
-      // employeeDocuments: this.fb.array([]),
-      // employeeEducationInfos: this.fb.array([]),
-      // employeeProfessionalCertifications: this.fb.array([]),
-      // employeeFamilyInfos: this.fb.array([]),
+      employeeDocuments: this.fb.array([]),
+      employeeEducationInfos: this.fb.array([]),
+      employeeProfessionalCertifications: this.fb.array([]),
+      employeeFamilyInfos: this.fb.array([]),
 
 
     });
@@ -134,8 +134,6 @@ export class EmployeeComponent implements OnInit {
  get employeeFamilyInfos(): FormArray {
   return this.employeeForm.get('employeeFamilyInfos') as FormArray;
 }
-
-
 
 
   createDocumentForm(): FormGroup {
@@ -166,8 +164,6 @@ export class EmployeeComponent implements OnInit {
  createEducationInfoForm(): FormGroup {
   return this.fb.group({
     idClient: [this.idClient],
-    id: [0],
-    idEmployee: [0],
     idEducationLevel: [null],
     idEducationExamination: [null],
     idEducationResult: [null],
@@ -177,14 +173,14 @@ export class EmployeeComponent implements OnInit {
     major: [''],
     passingYear: [null],
     instituteName: [''],
-    isForeignInstitute: [false],
+    isForeignInstitute: [null],
     duration: [null],
     achievement: [''],
     setDate: [new Date()],
-    createdBy: ['admin'],
-    educationLevelName: [''],
-    examinationName: [''],
-    resultName: ['']
+    createdBy: ['admin']
+    // educationLevelName: [''],
+    // examinationName: [''],
+    // resultName: ['']
   });
 }
 
@@ -255,6 +251,7 @@ removeFamilyInfo(index: number): void {
     this.employeeDocuments.clear(); 
     this.employeeProfessionalCertifications.clear(); 
     this.employeeFamilyInfos.clear(); 
+    
   }
 
   loadEmployees(): void {
@@ -417,61 +414,148 @@ removeFamilyInfo(index: number): void {
     });
   }
 
-  updateDocumentFile(doc: EmployeeDocumentDTO, file: File): void {
-  doc.fileName = file.name;
-  doc.uploadedFileExtention = file.name.split('.').pop() || '';
-  doc.documentFile = file;
-  doc.uploadDate = new Date();
+ updateDocumentFile(doc: EmployeeDocumentDTO, file: File): void {
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    doc.documentFile = reader.result as string; 
+    doc.fileName = file.name;
+    doc.uploadedFileExtention = file.name.split('.').pop() || '';
+    doc.uploadDate = new Date();
+
+    const index = this.employeeDocuments.controls.findIndex(group => group.value === doc);
+    if (index !== -1) {
+      this.employeeDocuments.at(index).patchValue(doc);
+    }
+  };
+
+  reader.readAsDataURL(file); 
 }
+
 
 onFileSelected(event: Event, index: number): void {
   const input = event.target as HTMLInputElement;
 
   if (input.files && input.files.length > 0) {
     const file = input.files[0];
-
-    // Get the FormGroup from the FormArray
     const docFormGroup = this.employeeDocuments.at(index);
     const doc: EmployeeDocumentDTO = docFormGroup.value;
 
-    this.updateDocumentFile(doc, file);           // Call your method
-    docFormGroup.patchValue(doc);                 // Update the form
+    this.updateDocumentFile(doc, file);
   }
 }
 
 
-add(): void {
-  if (this.employeeForm.invalid) {
-    console.warn('Form is invalid');
-    return;
-  }
 
-  this.employeeForm.enable(); // temporarily enable if any part is disabled
+
+// add(): void {
+//   if (this.employeeForm.invalid) {
+//     console.warn('Form is invalid');
+//     return;
+//   }
+
+//   this.employeeForm.enable(); // temporarily enable if any part is disabled
+
+//   const formValue = this.employeeForm.getRawValue();
+//   console.log('form value', formValue);
+
+//   const employeeDto = new EmployeeDTO({
+//     ...formValue,
+//     employeeDocuments: formValue.employeeDocuments || [],
+//     employeeEducationInfos: formValue.employeeEducationInfos || [],
+//     employeeProfessionalCertifications: formValue.employeeProfessionalCertifications || [],
+//     employeeFamilyInfos: formValue.employeeFamilyInfos || []
+//   });
+
+//   this.employeeService.createEmployee(employeeDto).subscribe({
+//     next: (res) => {
+//       console.log('mployee saved successfully:', res);
+//       alert('Employee saved successfully!');
+//       this.clearForm(); 
+//       this.employeeForm.disable(); 
+//     },
+//     error: (err) => {
+//       console.error('Error saving employee:', err);
+//       alert('Failed to save employee.');
+//     }
+//   });
+// }
+
+private mapFormToEmployeeDto(formValue: any): EmployeeDTO {
+  const formatDate = (date: Date | string | null | undefined): string | undefined => {
+    if (!date) return undefined;
+    const d = new Date(date);
+    const pad = (n: number, z = 2) => ('00' + n).slice(-z);
+    const ms = ('0000000' + d.getMilliseconds() * 10000).slice(-7);
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}.${ms}`;
+  };
+
+  return {
+    idClient: formValue.idClient,
+    id: formValue.id,
+    employeeName: formValue.employeeName,
+    employeeNameBangla: formValue.employeeNameBangla,
+    fatherName: formValue.fatherName,
+    motherName: formValue.motherName,
+    idReportingManager: formValue.idReportingManager,
+    idJobType: formValue.idJobType,
+    idEmployeeType: formValue.idEmployeeType,
+    //birthDate: formatDate(formValue.birthDate),
+    //joiningDate: formatDate(formValue.joiningDate),
+    idGender: formValue.idGender,
+    idReligion: formValue.idReligion,
+    idDepartment: +formValue.idDepartment, // ensure number
+    idSection: +formValue.idSection,       // ensure number
+    idDesignation: formValue.idDesignation,
+    hasOvertime: formValue.hasOvertime ?? false,
+    hasAttendenceBonus: formValue.hasAttendanceBonus ?? false,
+    idWeekOff: formValue.idWeekOff,
+    address: formValue.address,
+    presentAddress: formValue.presentAddress,
+    nationalIdentificationNumber: formValue.nationalIdentificationNumber,
+    contactNo: formValue.contactNo,
+    idMaritalStatus: formValue.idMaritalStatus,
+    isActive: formValue.isActive ?? true,
+   // setDate: formatDate(new Date()),
+    createdBy: formValue.createdBy ?? 'admin',
+    departmentName: undefined,
+    designation: undefined,
+    employeeDocuments: formValue.employeeDocuments || [],
+    employeeEducationInfos: formValue.employeeEducationInfos || [],
+    employeeProfessionalCertifications: formValue.employeeProfessionalCertifications || [],
+    employeeFamilyInfos: formValue.employeeFamilyInfos || [],
+    empImg: formValue.empImg
+  };
+}
+
+add(): void {
+
+  this.employeeForm.enable(); // temporarily enable to access values
 
   const formValue = this.employeeForm.getRawValue();
-  console.log('form value', formValue);
+  console.log('Form raw value:', formValue);
 
-  // const employeeDto = new EmployeeDTO({
-  //   ...formValue,
-  //   employeeDocuments: formValue.employeeDocuments || [],
-  //   employeeEducationInfos: formValue.employeeEducationInfos || [],
-  //   employeeProfessionalCertifications: formValue.employeeProfessionalCertifications || [],
-  //   employeeFamilyInfos: formValue.employeeFamilyInfos || []
-  // });
+  const employeeDto: EmployeeDTO = this.mapFormToEmployeeDto(formValue);
+  console.log('Mapped EmployeeDTO:', employeeDto);
 
-  this.employeeService.createEmployee(formValue).subscribe({
+  this.employeeService.createEmployee(employeeDto).subscribe({
     next: (res) => {
-      console.log('mployee saved successfully:', res);
+      console.log('Employee saved successfully:', res);
       alert('Employee saved successfully!');
-      this.clearForm(); 
-      this.employeeForm.disable(); 
+      this.clearForm();
+      this.employeeForm.disable();
     },
     error: (err) => {
       console.error('Error saving employee:', err);
       alert('Failed to save employee.');
     }
   });
+  this.employeeForm.enable();
+  this. clearForm();
+  this.loadEmployees();
 }
+
+
 
 
 

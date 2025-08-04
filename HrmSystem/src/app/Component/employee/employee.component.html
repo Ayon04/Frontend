@@ -67,14 +67,14 @@
           <div class="row mt-3">
             <div class="col">
               <label for="IdReportingManager">Reporting Manager</label>
-              <input id="IdReportingManager" type="text" class="form-control mt-1" formControlName="idReportingManager">
+              <input id="IdReportingManager" type="number" class="form-control mt-1" formControlName="idReportingManager">
             </div>
 
             <div class="col">
               <label for="IdJobType">Job Type</label>
               <select class="form-select mt-1" formControlName="idJobType">
 
-                <option *ngFor="let job of jobtyps" [value]="job.value">
+                <option *ngFor="let job of jobtyps" [ngValue]="job.value">
                   {{job.text}}
                 </option>
               </select>
@@ -83,7 +83,7 @@
             <div class="col">
               <label for="IdEmployeeType">Employee Type</label>
               <select class="form-select mt-1" formControlName="idEmployeeType">
-                <option *ngFor="let emp of employeeTypes" [value]="emp.value">
+                <option *ngFor="let emp of employeeTypes" [ngValue]="emp.value">
                   {{emp.text}}
                 </option>
               </select>
@@ -106,7 +106,7 @@
               <label for="IdGender">Gender</label>
               <select class="form-select mt-1" formControlName="idGender">
                 <option value="">Select Gender</option>
-                <option *ngFor="let gen of genders" [value]="gen.value">
+                <option *ngFor="let gen of genders" [ngValue]="gen.value">
                   {{gen.text}}
                 </option>
               </select>
@@ -115,7 +115,7 @@
             <div class="col">
               <label for="IdReligion">Religion</label>
               <select class="form-select mt-1" formControlName="idReligion">
-                <option *ngFor="let rel of religions" [value]="rel.value">
+                <option *ngFor="let rel of religions" [ngValue]="rel.value">
                   {{rel.text}}
                 </option>
               </select>
@@ -134,7 +134,7 @@
               <div class="col">
                 <label for="IdSection">Section</label>
                 <select class="form-select mt-1" formControlName="idSection">
-                  <option *ngFor="let sec of sections" [value]="sec.value">
+                  <option *ngFor="let sec of sections" [ngValue]="sec.value">
                     {{sec.text}}
                   </option>
                 </select>
@@ -144,7 +144,7 @@
                 <label for="IdDesignation">Designation</label>
                 <select class="form-select mt-1" formControlName="idDesignation">
 
-                  <option *ngFor="let desig of designations" [value]="desig.value">
+                  <option *ngFor="let desig of designations" [ngValue]="desig.value">
                     {{desig.text}}
                   </option>
                 </select>
@@ -187,7 +187,7 @@
               <div class="col">
                 <label for="IdWeekOff">Week Off</label>
                 <select class="form-select mt-1" formControlName="idWeekOff">
-                  <option *ngFor="let wkf of weekoffs" [value]="wkf.value">
+                  <option *ngFor="let wkf of weekoffs" [ngValue]="wkf.value">
                     {{wkf.text}}
                   </option>
                 </select>
@@ -208,7 +208,7 @@
                 <label for="IdMaritalStatus">Marital Status</label>
                 <select class="form-select mt-1" formControlName="idMaritalStatus">
                   <option value="">Select Marital Status</option>
-                  <option *ngFor="let mt of MaritalStatus" [value]="mt.value">
+                  <option *ngFor="let mt of MaritalStatus" [ngValue]="mt.value">
                     {{mt.text}}
                   </option>
                 </select>
@@ -262,7 +262,7 @@
           </div>
 
 
-          <!-- <div class="container mt-4 px-0">
+        <div class="container mt-4 px-0">
             <div class="row">
               <div class="col-15 mt-4">
                 <div class="border p-3">
@@ -310,7 +310,6 @@
                   <table class="table table-bordered table-sm mt-2">
                    <thead>
                         <tr>
-                          <th>IdEmployee</th>
                           <th>Education Level</th>
                           <th>Examination</th>
                           <th>Result</th>
@@ -328,47 +327,64 @@
                       </thead>
                       <tbody formArrayName="employeeEducationInfos">
                         <tr *ngFor="let edu of employeeEducationInfo.controls; let i = index" [formGroupName]="i">
-                          <td><input readonly type="text" formControlName="idEmployee" class="form-control" /></td>
+                      
 
                           <td>
                             <select class="form-select" formControlName="idEducationLevel">
-                              <option *ngFor="let el of EducationLevel" [value]="el.value">{{ el.text }}</option>
+                              <option *ngFor="let el of EducationLevel" [ngValue]="el.value">{{ el.text }}</option>
                             </select>
                           </td>
 
                           <td>
                             <select class="form-control" formControlName="idEducationExamination" >
-                              <option *ngFor="let exam of educationExaminations" [value]="exam.value">{{ exam.text }}</option>
+                              <option *ngFor="let exam of educationExaminations" [ngValue]="exam.value">{{ exam.text }}</option>
                             </select>
                           </td>
 
                            <td>
                             <select formControlName="idEducationResult" class="form-control">
-                              <option *ngFor="let result of educationResults" [value]="result.value">{{ result.text }}</option>
+                              <option *ngFor="let result of educationResults" [ngValue]="result.value">{{ result.text }}</option>
                             </select>
                           </td>
 
 
-                          <td><input type="text" formControlName="cgpa" class="form-control" /></td>
+                          <td><input type="number" formControlName="cgpa" class="form-control" /></td>
 
-                          <td><input type="text" formControlName="examScale" class="form-control"/></td>
+                          <td><input type="number" formControlName="examScale" class="form-control"/></td>
 
-                          <td><input type="text" formControlName="marks" class="form-control"  /></td>
+                          <td><input type="number" formControlName="marks" class="form-control"  /></td>
 
                           <td><input type="text" formControlName="major" class="form-control" /></td>
 
-                          <td><input type="text" formControlName="passingYear" class="form-control" /></td>
+                          <td><input type="number" formControlName="passingYear" class="form-control" /></td>
 
                           <td><input type="text" formControlName="instituteName" class="form-control" /></td>
 
-                          <td>
-                            <select formControlName="isForeignInstitute" class="form-control">
-                              <option [ngValue]=1>Yes</option>
-                              <option [ngValue]=0>No</option>
-                            </select>
-                          </td>
+                        <td>
+                          <div class="form-check form-check-inline">
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              [value]="true"
+                              formControlName="isForeignInstitute"
+                              id="foreignYes{{i}}"
+                            />
+                            <label class="form-check-label" [for]="'foreignYes' + i">Yes</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              [value]="false"
+                              formControlName="isForeignInstitute"
+                              id="foreignNo{{i}}"
+                            />
+                            <label class="form-check-label" [for]="'foreignNo' + i">No</label>
+                          </div>
+                        </td>
 
-                          <td><input type="text" formControlName="duration" class="form-control" /></td>
+
+                                                  <td><input type="number" formControlName="duration" class="form-control" /></td>
 
                           <td><input type="text" formControlName="achievement" class="form-control" /></td>
 
@@ -409,13 +425,13 @@
 
                         <td>
                           <select formControlName="idGender" class="form-control">
-                            <option *ngFor="let gender of genders" [value]="gender.value">{{ gender.text }}</option>
+                            <option *ngFor="let gender of genders" [ngValue]="gender.value">{{ gender.text }}</option>
                           </select>
                         </td>
 
                         <td>
                           <select formControlName="idRelationship" class="form-control">
-                            <option *ngFor="let rel of relationship" [value]="rel.value">{{ rel.text }}</option>
+                            <option *ngFor="let rel of relationship" [ngValue]="rel.value">{{ rel.text }}</option>
                           </select>
                         </td>
 
@@ -466,7 +482,7 @@
               </div>
 
             </div>
-          </div> -->
+          </div> 
         </form>
       </div>
 

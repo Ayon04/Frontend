@@ -1,7 +1,5 @@
 export interface EmployeeEducationInfoDTO {
   idClient: number;
-  id: number;
-  idEmployee: number;
   idEducationLevel: number;
   idEducationExamination: number;
   idEducationResult: number;
