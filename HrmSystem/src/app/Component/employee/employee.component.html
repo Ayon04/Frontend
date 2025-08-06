@@ -246,8 +246,9 @@
               </div>
 
               <div class="col ">
+                
                 <label for="profileImage" class="form-label">Upload Image</label>
-                <input type="file" class="form-control" id="profileImage" accept="image/*">
+                <input  formControlName="employeeImage" type="file" #fileInput (change)="onFileChange($event)" />
 
                 <div *ngIf="employeeImageUrl; else noImage">
                   <img [src]="employeeImageUrl" alt="Image" style="max-width: 200px;" class="mt-2" />
@@ -273,7 +274,6 @@
                     <table class="table table-bordered mt-2">
                       <thead>
                         <tr>
-                          <th>IdEmployee</th>
                           <th>Document Name</th>
                           <th>Upload File</th>
                           <th>File Name</th>
@@ -284,7 +284,6 @@
                       </thead>
                       <tbody formArrayName="employeeDocuments">
                         <tr *ngFor="let docCtrl of employeeDocuments.controls; let i = index" [formGroupName]="i">
-                          <td><input readonly type="text" formControlName="idEmployee" class="form-control" /></td>
                           <td><input type="text" formControlName="documentName" class="form-control" /></td>
                           <td><input type="file" (change)="onFileSelected($event, i)"  formControlName="documentFile" class="form-control" /></td>
 
@@ -384,7 +383,7 @@
                         </td>
 
 
-                                                  <td><input type="number" formControlName="duration" class="form-control" /></td>
+                        <td><input type="number" formControlName="duration" class="form-control" /></td>
 
                           <td><input type="text" formControlName="achievement" class="form-control" /></td>
 
@@ -406,7 +405,6 @@
                   <table class="table table-bordered table-sm mt-2">
                     <thead>
                       <tr>
-                        <th>Id Employee</th>
                         <th>Name</th>
                         <th>Gender</th>
                         <th>Relationship</th>
@@ -419,7 +417,6 @@
                     </thead>
                    <tbody formArrayName="employeeFamilyInfos">
                       <tr *ngFor="let fam of employeeFamilyInfos.controls; let i = index" [formGroupName]="i">
-                        <td><input readonly formControlName="idEmployee" class="form-control" /></td>
                         
                         <td><input type="text" formControlName="name" class="form-control" /></td>
 
@@ -457,7 +454,6 @@
                   <table class="table table-bordered table-sm mt-2">
                     <thead>
                       <tr>
-                        <th>Id Employee</th>
                         <th>Certification Title</th>
                         <th>Certification Institute</th>
                         <th>Institute Location</th>
@@ -468,7 +464,6 @@
                     </thead>
                    <tbody formArrayName="employeeProfessionalCertifications">
                       <tr *ngFor="let cert of employeeProfessionalCertifications.controls; let i = index" [formGroupName]="i">
-                        <td><input readonly type="text" formControlName="idEmployee" class="form-control" /></td>
                         <td><input formControlName="certificationTitle" class="form-control" /></td>
                         <td><input formControlName="certificationInstitute" class="form-control" /></td>
                         <td><input formControlName="instituteLocation" class="form-control" /></td>

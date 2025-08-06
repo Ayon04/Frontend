@@ -78,8 +78,7 @@ export class EmployeeDTO {
   employeeProfessionalCertifications: EmployeeProfessionalCertificationDTO[];
   employeeFamilyInfos: EmployeeFamilyInfoDTO[];
   
-
-  empImg?: File;
+  employeeImage?: string;
 
   constructor(data: Partial<EmployeeDTO> = {}) {
     this.idClient = data.idClient ?? 0;
@@ -117,7 +116,7 @@ export class EmployeeDTO {
     this.employeeProfessionalCertifications = data.employeeProfessionalCertifications ?? [];
     this.employeeFamilyInfos = data.employeeFamilyInfos ?? [];
 
-    this.empImg = data.empImg;
+    this.employeeImage = data.employeeImage;
   }
 
   

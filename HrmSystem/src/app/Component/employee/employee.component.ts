@@ -110,6 +110,7 @@ export class EmployeeComponent implements OnInit {
       idMaritalStatus: new FormControl(),
       createdBy: ['admin'],
       isActive: [true],
+      employeeImage:new FormControl(),
       employeeDocuments: this.fb.array([]),
       employeeEducationInfos: this.fb.array([]),
       employeeProfessionalCertifications: this.fb.array([]),
@@ -251,6 +252,7 @@ removeFamilyInfo(index: number): void {
     this.employeeDocuments.clear(); 
     this.employeeProfessionalCertifications.clear(); 
     this.employeeFamilyInfos.clear(); 
+   // this.employeeImageUrl
     
   }
 
@@ -418,7 +420,7 @@ removeFamilyInfo(index: number): void {
   const reader = new FileReader();
 
   reader.onload = () => {
-    doc.documentFile = reader.result as string; 
+    doc.uploadedFile = reader.result as string; 
     doc.fileName = file.name;
     doc.uploadedFileExtention = file.name.split('.').pop() || '';
     doc.uploadDate = new Date();
@@ -432,12 +434,10 @@ removeFamilyInfo(index: number): void {
   reader.readAsDataURL(file); 
 }
 
-
-onFileSelected(event: Event, index: number): void {
+ onFileSelected(event: Event, index: number): void {
   const input = event.target as HTMLInputElement;
 
-  if (input.files && input.files.length > 0) {
-    const file = input.files[0];
+  if (input.files && input.files.length > 0) {    const file = input.files[0];
     const docFormGroup = this.employeeDocuments.at(index);
     const doc: EmployeeDocumentDTO = docFormGroup.value;
 
@@ -524,15 +524,52 @@ private mapFormToEmployeeDto(formValue: any): EmployeeDTO {
     employeeEducationInfos: formValue.employeeEducationInfos || [],
     employeeProfessionalCertifications: formValue.employeeProfessionalCertifications || [],
     employeeFamilyInfos: formValue.employeeFamilyInfos || [],
-    empImg: formValue.empImg
+    employeeImage: formValue.employeeImage
   };
 }
 
+onFileChange(event: any): void {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader(); 
+    reader.onload = () => {
+      const base64String = (reader.result as string).split(',')[1];
+      this.employeeForm.patchValue({
+        employeeImage: base64String
+      });
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+// add(): void {
+
+//   this.employeeForm.enable(); // temporarily enable to access values
+
+//   const formValue = this.employeeForm.getRawValue();
+//   console.log('Form raw value:', formValue);
+
+//   const employeeDto: EmployeeDTO = this.mapFormToEmployeeDto(formValue);
+//   console.log('Mapped EmployeeDTO:', employeeDto);
+
+//   this.employeeService.createEmployee(employeeDto).subscribe({
+//     next: (res) => {
+//       console.log('Employee saved successfully:', res);
+//       alert('Employee saved successfully!');
+//       this.clearForm();
+//       this.employeeForm.disable();
+//     },
+//     error: (err) => {
+//       console.error('Error saving employee:', err);
+//       alert('Failed to save employee.');
+//     }
+//   });
+//   this.employeeForm.enable();
+//   this. clearForm();
+//   this.loadEmployees();
+// }
 add(): void {
-
-  this.employeeForm.enable(); // temporarily enable to access values
-
-  const formValue = this.employeeForm.getRawValue();
+  const formValue = this.employeeForm.getRawValue(); // no need to enable/disable
   console.log('Form raw value:', formValue);
 
   const employeeDto: EmployeeDTO = this.mapFormToEmployeeDto(formValue);
@@ -541,22 +578,16 @@ add(): void {
   this.employeeService.createEmployee(employeeDto).subscribe({
     next: (res) => {
       console.log('Employee saved successfully:', res);
+      console.log('Base64 image:', this.employeeForm.get('empImg')?.value);
       alert('Employee saved successfully!');
       this.clearForm();
-      this.employeeForm.disable();
+      this.loadEmployees();
     },
     error: (err) => {
       console.error('Error saving employee:', err);
       alert('Failed to save employee.');
     }
   });
-  this.employeeForm.enable();
-  this. clearForm();
-  this.loadEmployees();
 }
-
-
-
-
 
 }
