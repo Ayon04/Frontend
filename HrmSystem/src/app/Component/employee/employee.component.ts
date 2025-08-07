@@ -615,4 +615,67 @@ add(): void {
   });
 }
 
+update(): void {
+  const formValue = this.employeeForm.getRawValue(); 
+  console.log('Form raw value (update):', formValue);
+
+  const employeeDto: EmployeeDTO = this.mapFormToEmployeeDto(formValue);
+  console.log('Mapped EmployeeDTO (update):', employeeDto);
+
+  this.employeeService.updateEmployee(employeeDto).subscribe({
+    next: (res) => {
+      console.log('Employee updated successfully:', res);
+      console.log('Base64 image:', this.employeeForm.get('employeeImage')?.value); 
+      alert('Employee updated successfully!');
+      this.clearForm();     // clear the form
+      this.loadEmployees(); // reload employee list
+    },
+    error: (err) => {
+      console.error('Error updating employee:', err);
+      alert('Failed to update employee.');
+    }
+  });
+}
+
+
+// delete(idClient: number, id: number): void {
+//   if (!confirm('Are you sure you want to hide this employee?')) return;
+
+//   this.employeeService.deleteEmployee(idClient, id).subscribe({
+//     next: (res) => {
+//       console.log('Hide response:', res);
+//       alert('Employee hidden successfully!');
+//       this.loadEmployees(); // reload the list
+//     },
+//     error: (err) => {
+//       console.error('Error hiding employee:', err);
+//       alert('Failed to hide employee.');
+//     }
+//   });
+// }
+
+deleteEmp(): void {
+    if (!this.selectedEmployee){
+
+      alert('Please Select employee to delete');
+      return;
+       
+    } 
+ 
+    if (confirm('Are you sure to delete ?')) {
+      this.employeeService.deleteEmployee(
+        this.idClient,
+        this.selectedEmployee.id
+      ).subscribe({
+        next: () => {
+          this.loadEmployees();
+          alert('Employee Id : '+ this.selectedEmployee?.id + ' has been Deleted')
+        },
+        error: (err) => console.error(err)
+      });
+    }
+
+
+}
+
 }

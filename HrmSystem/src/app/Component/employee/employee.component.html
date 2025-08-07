@@ -35,8 +35,9 @@
         <div class="d-flex justify-content-end mb-3">
           <button type="button" (click)="add()" class="btn btn-primary me-2">Add</button>
           <button type="button" class="btn btn-warning me-2">Edit</button>
-          <button  type="button" class="btn btn-success me-2">Save</button>
-           <button type="button" class="btn btn-danger me-2">Delete</button>
+          <button  type="button" (click)="update()" class="btn btn-success me-2">Save</button>
+           <button type="button" (click)="deleteEmp()" class="btn btn-danger me-2">Delete</button>
+
           <button (click)="clearForm()" type="button" class="btn btn-danger">Cancel</button>
 
         </div>
@@ -468,7 +469,7 @@
                       <tr *ngFor="let cert of employeeProfessionalCertifications.controls; let i = index" [formGroupName]="i">
                         <td><input formControlName="certificationTitle" class="form-control" /></td>
                         <td><input formControlName="certificationInstitute" class="form-control" /></td>
-                        <td><input formControlName="instituteLocation" class="form-control" /></td>
+                        <td><input disable formControlName="instituteLocation" class="form-control" /></td>
                         <td><input formControlName="fromDate" type="date" class="form-control" /></td>
                         <td><input formControlName="toDate" type="date" class="form-control" /></td>
                         <td><button type="button" class="btn btn-danger btn-sm" (click)="removeemployeeProfessionalCertifications(i)">Remove</button></td>

@@ -66,6 +66,24 @@ createEmployee(empployee: EmployeeDTO): Observable<any> {
     return this.http.post(this.apiUrl, empployee);
   }
 
+updateEmployee(employee: EmployeeDTO): Observable<any> {
+  return this.http.put(this.apiUrl, employee, {
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
+
+
+deleteEmployee(idClient: number, id: number): Observable<any> {
+  const url = `${this.apiUrl}/${idClient}/${id}`;
+  return this.http.patch(url, null, {
+  });
+}
+
+// deleteEmployee(idClient: number, id: number): Observable<any> {
+//     return this.http.delete(`${this.apiUrl}/${idClient}/${id}`);
+//   }
+
+
 getAllEmployees(idClient: number): Observable<EmployeeDTO[]> {
     return this.http.get<EmployeeDTO[]>(`${this.apiUrl}/?idClient=${idClient}`)
       .pipe(
@@ -101,4 +119,5 @@ getEmployeeImage(idClient: number, id: number): Observable<Blob> {
     console.error('API Error:', error);
     return throwError(() => new Error(error.message || 'Server Error'));
   }
+
 }
