@@ -62,7 +62,7 @@ export class EmployeeService {
 
   //private headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-  createEmployee(empployee: EmployeeDTO): Observable<any> {
+createEmployee(empployee: EmployeeDTO): Observable<any> {
     return this.http.post(this.apiUrl, empployee);
   }
 

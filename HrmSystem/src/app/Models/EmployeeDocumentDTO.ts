@@ -8,5 +8,5 @@ export interface EmployeeDocumentDTO {
   uploadDate: Date;
   setDate?: Date;
   createdBy?: string;
-  uploadedFile?: string; // For file upload in Angular
+  uploadedFile?: string;
 }

@@ -148,7 +148,7 @@ export class EmployeeComponent implements OnInit {
       uploadDate: [new Date()],
       setDate: [new Date()],
       createdBy: ['admin'],
-      documentFile: [null]
+      uploadedFile: new FormControl()
     });
   }
 
@@ -433,6 +433,31 @@ removeFamilyInfo(index: number): void {
 
   reader.readAsDataURL(file); 
 }
+
+
+
+onDocFileChange(event: any, index: number): void {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader(); 
+    reader.onload = () => {
+      const base64String = (reader.result as string).split(',')[1];
+      const fileName = file.name;
+      const fileExtension = file.name.split('.').pop();
+
+      const documentsFormArray = this.employeeForm.get('employeeDocuments') as FormArray;
+      const docFormGroup = documentsFormArray.at(index) as FormGroup;
+
+      docFormGroup.patchValue({
+        uploadedFile: base64String,
+        fileName: fileName,
+        uploadedFileExtention: fileExtension
+      });
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
 
  onFileSelected(event: Event, index: number): void {
   const input = event.target as HTMLInputElement;

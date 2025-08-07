@@ -19,7 +19,7 @@
             <h6 class="mb-0 py-1">Employee List</h6>
           </div>
           <div *ngFor="let emp of employees" class="list-group-item list-group-item-action"
-            [ngStyle]="{ backgroundColor: emp.id === selectedEmployee?.id ? 'skyblue' : '' }" style="cursor: pointer"
+            [ngStyle]="{ backgroundColor: emp.id === selectedEmployee?.id ? '#C5C5C5' : '' }" style="cursor: pointer"
             (click)="loadEmployeeToForm(emp);loadEmployeeImageToForm(emp)">
 
             <div class="fw-bold">{{ emp.id }} - {{ emp.employeeName }}</div>
@@ -34,9 +34,11 @@
         <!-- Button Actions -->
         <div class="d-flex justify-content-end mb-3">
           <button type="button" (click)="add()" class="btn btn-primary me-2">Add</button>
-          <button type="button" class="btn btn-warning me-2">Update</button>
-          <button type="button" class="btn btn-danger me-2">Delete</button>
-          <button (click)="clearForm()" type="button" class="btn btn-secondary">Clear</button>
+          <button type="button" class="btn btn-warning me-2">Edit</button>
+          <button  type="button" class="btn btn-success me-2">Save</button>
+           <button type="button" class="btn btn-danger me-2">Delete</button>
+          <button (click)="clearForm()" type="button" class="btn btn-danger">Cancel</button>
+
         </div>
 
         <!-- Employee Form -->
@@ -255,7 +257,7 @@
                 </div>
 
                 <ng-template #noImage>
-                  <p>No image available</p>
+                  <p>No image available</p>        
                 </ng-template>
               </div>
 
@@ -285,7 +287,7 @@
                       <tbody formArrayName="employeeDocuments">
                         <tr *ngFor="let docCtrl of employeeDocuments.controls; let i = index" [formGroupName]="i">
                           <td><input type="text" formControlName="documentName" class="form-control" /></td>
-                          <td><input type="file" (change)="onFileSelected($event, i)"  formControlName="documentFile" class="form-control" /></td>
+                          <td><input type="file" (change)="onFileSelected($event, i);onDocFileChange($event, i)"  formControlName="uploadedFile" class="form-control" /></td>
 
                           <td><input readonly type="text" formControlName="fileName" class="form-control" /></td>
                           <td><input readonly ="date" formControlName="uploadDate" class="form-control" /></td>
